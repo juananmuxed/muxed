@@ -1,0 +1,26 @@
+[
+    {
+        "name":"",
+        "lines": [
+            {"type":"commit","function":"addLine","line_type":"prompt","param":"blank","color":"","async":false,"text":"<br>"}
+        ]
+    },
+    {
+        "name":"clear",
+        "lines": [
+            {"type":"commit","function":"clearTerminal","line_type":"prompt","param":"blank","color":"","async":false,"text":""}
+        ]
+    },
+    {
+        "name":"cd",
+        "lines": [
+            {"type":"commit","function":"changePath","line_type":"prompt","param":"one","color":"","async":false,"text":"<br>"}
+        ]
+    },
+    {
+        "name":"type",
+        "lines": [
+            {"type":"dispatch","function":"typetext","line_type":"prompt","param":"one","color":"","async":true,"text":"<br>","speed":30}
+        ]
+    }
+]

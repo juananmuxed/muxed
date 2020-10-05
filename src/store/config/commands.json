@@ -1,0 +1,28 @@
+[
+    {
+        "name":"",
+        "param1":false,
+        "lines": []
+    },
+    {
+        "name":"clear",
+        "param1":false,
+        "lines": [
+            {"type":"commit","function":"clearTerminal","async":false}
+        ]
+    },
+    {
+        "name":"cd",
+        "param1":false,
+        "lines": [
+            {"type":"commit","function":"changePath","async":false}
+        ]
+    },
+    {
+        "name":"type",
+        "param1":true,
+        "lines": [
+            {"type":"dispatch","function":"typetext","async":true,"speed":30,"color":"info"}
+        ]
+    }
+]

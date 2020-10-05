@@ -1,8 +1,8 @@
 <p align=center>
-  <img width=300 src="./media/LOGO_MXD.png"/>
+  <img width=300 src="./media/Logo_MuXeD.png"/>
   <br>
   <span><strong>La MuXeD web</strong><br>💻 Una web experimental de cojones 💻<br><br>
-    <sub>Hecho con ❤︎ por
+    <sub>⌨️ con ❤︎ por
       <a href="https://github.com/juananmuxed">MuXeD</a>
     </sub><br><br>
     <a href="https://muxed.es/"><img src="https://img.shields.io/website?down_message=Ca%C3%ADdo&label=Web&style=flat&up_message=En%20linea&url=https%3A%2F%2Fmuxed.es%2F"></a>

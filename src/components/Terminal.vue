@@ -12,7 +12,7 @@
                     <span class="success">guest@MuXeD</span>:<span class="info">{{ terminal.actualpath }}</span>$
                 </div>
                 <div class="fakeinput" v-html="terminal.inputval.text" v-show="!terminal.disabledInput"></div>
-                <input type="text" @keyup="addKeyToFake()" @keydown.delete="delKeyToFake()" @keyup.enter="commandInput(terminal.inputval)" @keydown.tab="search($event)" v-model="terminal.inputval.faketext" :disabled="terminal.disabledInput">
+                <input id="inputPrompt" type="text" @keyup="addKeyToFake()" @keydown.delete="delKeyToFake()" @keyup.enter="commandInput(terminal.inputval)" @keydown.tab="search($event)" v-model="terminal.inputval.faketext" :disabled="terminal.disabledInput">
             </div>
         </div>
         <div class="overlay"></div>

@@ -105,12 +105,16 @@ export default new Vuex.Store({
       setTimeout(() => {
         window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
         commit('changeStatePrompt');
+        setTimeout(() => {
+          document.getElementById("inputPrompt").focus();
+        }, 10);
       }, 10);
     },
 
     search(e) {
       e.preventDefault();
     },
+    
     async typetext({state,commit},params){
       let empty_line_echo = { line_type: 'echo', text: '', path: state.terminal.actualpath , color:params.color }
       commit('addLine',empty_line_echo)

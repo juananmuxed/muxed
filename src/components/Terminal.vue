@@ -26,23 +26,28 @@ export default {
     async created() {
         this.terminal.lines = []
         this.changeStatePrompt()
-        await this.typetext({param01:"Starting proccess",speed:30,color:'info'})
-        await this.sleep(120)
-        await this.typetext({param01:"Meditating",speed:35,color:'success'})
-        await this.sleep(120)
-        await this.loadingEffect({text:'...',speed:200,repeats:2})
-        await this.sleep(40)
-        await this.typetext({param01:"Starting servers",speed:35,color:'info'})
-        await this.sleep(120)
-        await this.loadingEffect({text:'...',speed:200,repeats:2})
-        await this.sleep(40)
+        await this.typetext({param01:"== Primary Events ==",speed:30,color:'success'})
+        await this.typetext({param01:"<br>",speed:0,color: 'info'})
+        await this.startingProccess({process: 'Demonology', minspeed: 25, maxspeed: 50})
+        await this.startingProccess({process: 'H4CK1NG', minspeed: 20, maxspeed: 30})
+        await this.typetext({param01:"<br>",speed:0,color: 'info'})
+        await this.typetext({param01:"== Secondary Events ==",speed:30,color:'success'})
+        await this.typetext({param01:"<br>",speed:0,color: 'info'})
+        await this.sleep(60)
+        await this.loadingProccess({process: 'Meditation', minspeed: 30, maxspeed: 400})
+        await this.loadingProccess({process: 'Tyrany', minspeed: 30, maxspeed: 400})
+        await this.typetext({param01:"<br>",speed:0,color: 'info'})
+        await this.typetext({param01:"========================",speed:10,color: 'info'})
+        await this.typetext({param01:"== Welcome to the web ==",speed:10,color: 'info'})
+        await this.typetext({param01:"========================",speed:10,color: 'info'})
+        await this.typetext({param01:"<br>",speed:0,color: 'info'})
         this.changeStatePrompt()  
     },
     computed: {
         ...mapState(['terminal','sleep'])
     },
     methods: {
-        ...mapActions(['commandInput','search','typetext','loadingEffect']),
+        ...mapActions(['commandInput','search','typetext','startingProccess','loadingProccess']),
         ...mapMutations(['changeStatePrompt','addKeyToFake','delKeyToFake'])
     },
 }

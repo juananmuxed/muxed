@@ -18,7 +18,8 @@ export default new Vuex.Store({
       lines: [],
       commands: commands
     },
-    sleep:(ms) => {return new Promise(resolve => setTimeout(resolve, ms))}
+    sleep:(ms) => {return new Promise(resolve => setTimeout(resolve, ms))},
+    randomSpeed: (minspeed,maxspeed) => { return Math.floor(Math.random() * (maxspeed - minspeed + 1)) + minspeed }
   },
   mutations: {
     addLine: (state, line) => {
@@ -51,6 +52,12 @@ export default new Vuex.Store({
     delKeyToFake:(state) => {
       state.terminal.inputval.text = state.terminal.inputval.text.substring(0,state.terminal.inputval.text.length - 1);
     },
+    deleteLastLine:(state) => {
+      state.terminal.lines.pop();
+    },
+    changeLastLineColor:(state,color) => {
+      state.terminal.lines[state.terminal.lines.length - 1].color = color
+    }
  
   },
   actions: {
@@ -73,7 +80,7 @@ export default new Vuex.Store({
       }
 
       if(Object.entries(com).length === 0) {
-        commit('addLine',{ line_type: 'echo', text: 'muxbash: ' + command + ' command not found', path: actualPath , color:'error-light'})
+        commit('addLine',{ line_type: 'echo', text: 'MuXbash: ' + command + ' command not found', path: actualPath , color:'error-light'})
         return dispatch('finalCommand')
       }
 
@@ -124,20 +131,53 @@ export default new Vuex.Store({
         text_line_echo += stringArray[x]
         empty_line_echo.text = text_line_echo
         commit('editTextLastLine',empty_line_echo.text)
-        await state.sleep(params.speed)
+        await state.sleep(params.minspeed && params.maxspeed ? state.randomSpeed(params.minspeed,params.maxspeed) : params.speed)
       }
     },
+
     async loadingEffect({state,commit},params){
       let stringArray = params.text.split('')
       for (let y = 0; y < params.repeats; y++) {
         for (let x = 0; x < stringArray.length; x++) {
           commit('addTextLastLine',stringArray[x])
-          await state.sleep(params.speed)
+          await state.sleep(params.minspeed && params.maxspeed ? state.randomSpeed(params.minspeed,params.maxspeed) : params.speed)
         }
         commit('deleteTextLastLine',stringArray.length)
         await state.sleep(params.speed)
       }
-    }
+    },
+
+    async startingProccess({state, commit, dispatch}, params) {
+      try {
+        if( !params.process ) throw ('You need more pylons!');
+        if( !params.minspeed || !params.maxspeed ) throw ('Wololo!');
+        await dispatch('typetext',{param01:params.process + ' => Starting',speed:state.randomSpeed(params.minspeed,params.maxspeed),color:'success'})
+        await state.sleep(120)
+        await dispatch('loadingEffect',{text:'...',speed:200,repeats:2})
+        await state.sleep(40)
+        commit('deleteLastLine')
+        commit('addLine', { line_type: 'echo', text: params.process + ' => Started<br>', path: state.terminal.actualPath, color:'info' })
+        await state.sleep(40)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async loadingProccess({state, commit, dispatch}, params) {
+      try {
+        if( !params.process ) throw ('You need more pylons!');
+        if( !params.minspeed || !params.maxspeed ) throw ('Wololo!');
+        await dispatch('typetext',{param01:params.process + ' => ',speed:params.minspeed,color:'success'})
+        await state.sleep(120)
+        await dispatch('loadingEffect',{text:'[\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b]',minspeed:params.minspeed,maxspeed:params.maxspeed,repeats:1})
+        await state.sleep(40)
+        commit('addTextLastLine', "Success")
+        commit('changeLastLineColor', 'info')
+        await state.sleep(40)
+      } catch (error) {
+        console.log(error)
+      }
+    },
   },
   modules: {
   }

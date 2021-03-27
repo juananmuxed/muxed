@@ -44,11 +44,6 @@ export default new Vuex.Store({
     editTextLastLine: (state,newText) => {state.terminal.lines[state.terminal.lines.length-1].text = newText},
     addTextLastLine: (state,word) => {state.terminal.lines[state.terminal.lines.length-1].text += word},
     deleteTextLastLine: (state,number) => {state.terminal.lines[state.terminal.lines.length-1].text = state.terminal.lines[state.terminal.lines.length-1].text.substring(0,state.terminal.lines[state.terminal.lines.length-1].text.length - number)},
-    addKeyToFake:(state) => {
-      let newKey = state.terminal.inputval.faketext;
-      state.terminal.inputval.faketext = ''
-      state.terminal.inputval.text += newKey;
-    },
     delKeyToFake:(state) => {
       state.terminal.inputval.text = state.terminal.inputval.text.substring(0,state.terminal.inputval.text.length - 1);
     },
@@ -169,7 +164,7 @@ export default new Vuex.Store({
         if( !params.minspeed || !params.maxspeed ) throw ('Wololo!');
         await dispatch('typetext',{param01:params.process + ' => ',speed:params.minspeed,color:'success'})
         await state.sleep(120)
-        await dispatch('loadingEffect',{text:'[\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b]',minspeed:params.minspeed,maxspeed:params.maxspeed,repeats:1})
+        await dispatch('loadingEffect',{text:'[■■■■■■■■■■■■■■■■■■■■■■■■■■]',minspeed:params.minspeed,maxspeed:params.maxspeed,repeats:1})
         await state.sleep(40)
         commit('addTextLastLine', "Success")
         commit('changeLastLineColor', 'info')

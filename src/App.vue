@@ -23,4 +23,7 @@ export default {
   height: auto;
   padding: 0;
 }
+body {
+  background: #231925;
+}
 </style>

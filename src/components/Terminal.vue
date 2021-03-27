@@ -12,7 +12,7 @@
                     <span class="success">guest@MuXeD</span>:<span class="info">{{ terminal.actualpath }}</span>$
                 </div>
                 <div class="fakeinput" v-html="terminal.inputval.text" v-show="!terminal.disabledInput"></div>
-                <input id="inputPrompt" type="text" @keyup="addKeyToFake()" @keydown.delete="delKeyToFake()" @keyup.enter="commandInput(terminal.inputval)" @keydown.tab="search($event)" v-model="terminal.inputval.faketext" :disabled="terminal.disabledInput">
+                <input id="inputPrompt" type="text" @input="e => terminal.inputval.text = e.target.value" @keyup.enter="commandInput(terminal.inputval)" @keydown.tab="search($event)" :value="terminal.inputval.text" :disabled="terminal.disabledInput">
             </div>
         </div>
         <div class="overlay"></div>
@@ -48,7 +48,7 @@ export default {
     },
     methods: {
         ...mapActions(['commandInput','search','typetext','startingProccess','loadingProccess']),
-        ...mapMutations(['changeStatePrompt','addKeyToFake','delKeyToFake'])
+        ...mapMutations(['changeStatePrompt','delKeyToFake'])
     },
 }
 </script>

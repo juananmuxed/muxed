@@ -30,6 +30,7 @@ export default {
         await this.typetext({param01:"<br>",speed:0,color: 'info'})
         await this.startingProccess({process: 'Demonology', minspeed: 25, maxspeed: 50})
         await this.startingProccess({process: 'H4CK1NG', minspeed: 20, maxspeed: 30})
+        await this.startingProccess({process: 'Condemor de la Pradera', minspeed: 20, maxspeed: 30})
         await this.typetext({param01:"<br>",speed:0,color: 'info'})
         await this.typetext({param01:"== Secondary Events ==",speed:30,color:'success'})
         await this.typetext({param01:"<br>",speed:0,color: 'info'})
@@ -48,7 +49,7 @@ export default {
     },
     methods: {
         ...mapActions(['commandInput','search','typetext','startingProccess','loadingProccess']),
-        ...mapMutations(['changeStatePrompt','delKeyToFake'])
+        ...mapMutations(['changeStatePrompt'])
     },
 }
 </script>

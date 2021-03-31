@@ -44,9 +44,6 @@ export default new Vuex.Store({
     editTextLastLine: (state,newText) => {state.terminal.lines[state.terminal.lines.length-1].text = newText},
     addTextLastLine: (state,word) => {state.terminal.lines[state.terminal.lines.length-1].text += word},
     deleteTextLastLine: (state,number) => {state.terminal.lines[state.terminal.lines.length-1].text = state.terminal.lines[state.terminal.lines.length-1].text.substring(0,state.terminal.lines[state.terminal.lines.length-1].text.length - number)},
-    delKeyToFake:(state) => {
-      state.terminal.inputval.text = state.terminal.inputval.text.substring(0,state.terminal.inputval.text.length - 1);
-    },
     deleteLastLine:(state) => {
       state.terminal.lines.pop();
     },

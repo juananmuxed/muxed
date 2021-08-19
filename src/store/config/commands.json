@@ -1,27 +1,27 @@
 [
     {
         "name":"",
-        "param1":false,
-        "lines": []
+        "params":null,
+        "executionsLines": []
     },
     {
         "name":"clear",
-        "param1":false,
-        "lines": [
-            {"type":"commit","function":"clearTerminal","async":false}
+        "params":null,
+        "executionsLines": [
+            {"type":"commit","function":"clearTerminal","async":false,"speed":null,"color":null}
         ]
     },
     {
         "name":"cd",
-        "param1":false,
-        "lines": [
-            {"type":"commit","function":"changePath","async":false}
+        "params":null,
+        "executionsLines": [
+            {"type":"commit","function":"changePath","async":false,"speed":null,"color":null}
         ]
     },
     {
         "name":"type",
-        "param1":true,
-        "lines": [
+        "params":null,
+        "executionsLines": [
             {"type":"dispatch","function":"typetext","async":true,"speed":30,"color":"info"}
         ]
     }

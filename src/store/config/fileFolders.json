@@ -1,0 +1,32 @@
+[
+    {
+        "id": 0,
+        "type": "D",
+        "name": "~",
+        "extension": null,
+        "parent": null,
+        "permits": [
+            "rwx",
+            "r-x",
+            "r--"
+        ],
+        "size": 4096,
+        "owner": "MuXeD",
+        "creationDate": "1987-01-04T19:34:12+13:00"
+    },
+    {
+        "id": 1,
+        "type": "F",
+        "name": "README",
+        "extension": "md",
+        "parent": 0,
+        "permits": [
+            "rwx",
+            "r-x",
+            "r--"
+        ],
+        "size": 62004,
+        "owner": "MuXeD",
+        "creationDate": "1987-01-04T19:35:12+13:00"
+    }
+]

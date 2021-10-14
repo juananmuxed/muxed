@@ -12,7 +12,7 @@
             </div>
             <div class="line">
                 <div class="prompt" v-if="!terminal.disabledInput">
-                    <span class="success">{{ terminal.user }}@MuXeD</span>:<span class="info">{{ terminal.getActualPathNameById }}</span>$
+                    <span class="success">{{ terminal.user }}@MuXeD</span>:<span class="info">{{ terminal.actualUrl }}</span>$
                 </div>
                 <div class="fakeinput" v-show="!terminal.disabledInput">
                     <span>{{ terminal.inputText }}</span>
@@ -20,9 +20,9 @@
                         id="inputPrompt" 
                         type="text"
                         @input="terminal.updateText"
-                        @keyup.enter="commandInput(terminal.inputValue)" 
-                        @keydown.tab="search($event)" 
-                        :value="terminal.inputText" 
+                        @keyup.enter="terminal.commandInput()"
+                        @keydown.tab="search($event)"
+                        :value="terminal.inputText"
                         :disabled="terminal.disabledInput"
                     >
                 </div>
@@ -36,10 +36,15 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import TerminalModule from '@/store/module/terminal'
+import * as Cookies from '@/utils/cookies'
 
 @Component
 export default class Terminal extends Vue {
     public terminal = getModule(TerminalModule, this.$store);
+
+    created() {
+        Cookies.setCookie('muxed-galleta','test');
+    }
 }
 // export default {
 //     async created() {

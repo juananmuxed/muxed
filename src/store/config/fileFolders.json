@@ -28,5 +28,80 @@
         "size": 62004,
         "owner": "MuXeD",
         "creationDate": "1987-01-04T19:35:12+13:00"
+    },
+    {
+        "id": 2,
+        "type": "D",
+        "name": "images",
+        "extension": null,
+        "parent": 0,
+        "permits": [
+            "rwx",
+            "r-x",
+            "r--"
+        ],
+        "size": 4096,
+        "owner": "MuXeD",
+        "creationDate": "1987-01-04T19:34:12+13:00"
+    },
+    {
+        "id": 3,
+        "type": "D",
+        "name": "projects",
+        "extension": null,
+        "parent": 0,
+        "permits": [
+            "rwx",
+            "r-x",
+            "r--"
+        ],
+        "size": 4096,
+        "owner": "MuXeD",
+        "creationDate": "1987-01-04T19:34:12+13:00"
+    },
+    {
+        "id": 4,
+        "type": "D",
+        "name": "socialmedia",
+        "extension": null,
+        "parent": 0,
+        "permits": [
+            "rwx",
+            "r-x",
+            "r--"
+        ],
+        "size": 4096,
+        "owner": "MuXeD",
+        "creationDate": "1987-01-04T19:34:12+13:00"
+    },
+    {
+        "id": 5,
+        "type": "D",
+        "name": "skills",
+        "extension": null,
+        "parent": 0,
+        "permits": [
+            "rwx",
+            "r-x",
+            "r--"
+        ],
+        "size": 4096,
+        "owner": "MuXeD",
+        "creationDate": "1987-01-04T19:34:12+13:00"
+    },
+    {
+        "id": 6,
+        "type": "D",
+        "name": "pr0n",
+        "extension": null,
+        "parent": 2,
+        "permits": [
+            "rwx",
+            "r-x",
+            "r--"
+        ],
+        "size": 4096,
+        "owner": "MuXeD",
+        "creationDate": "1987-01-04T19:34:12+13:00"
     }
 ]

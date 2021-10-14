@@ -8,14 +8,14 @@
         "name":"clear",
         "params":null,
         "executionsLines": [
-            {"type":"commit","function":"clearTerminal","async":false,"speed":null,"color":null}
+            {"type":"commit","function":"clearTerminal","async":false}
         ]
     },
     {
         "name":"cd",
         "params":null,
         "executionsLines": [
-            {"type":"commit","function":"changePath","async":false,"speed":null,"color":null}
+            {"type":"dispatch","function":"changePathByName","async":false}
         ]
     },
     {

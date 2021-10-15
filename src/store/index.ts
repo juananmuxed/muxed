@@ -18,14 +18,8 @@ const store = new Vuex.Store({
   //   changeLastLineColor:(state,color) => {
   //     state.terminal.lines[state.terminal.lines.length - 1].color = color
   //   }
- 
   // },
   // actions: {
-
-  //   search(e) {
-  //     e.preventDefault();
-  //   },
-    
   //   async typetext({state,commit},params){
   //     let empty_line_echo = { line_type: 'echo', text: '', path: state.terminal.actualpath , color:params.color }
   //     commit('addLine',empty_line_echo)
@@ -38,7 +32,6 @@ const store = new Vuex.Store({
   //       await state.sleep(params.minspeed && params.maxspeed ? state.randomSpeed(params.minspeed,params.maxspeed) : params.speed)
   //     }
   //   },
-
   //   async loadingEffect({state,commit},params){
   //     let stringArray = params.text.split('')
   //     for (let y = 0; y < params.repeats; y++) {
@@ -50,7 +43,6 @@ const store = new Vuex.Store({
   //       await state.sleep(params.speed)
   //     }
   //   },
-
   //   async startingProccess({state, commit, dispatch}, params) {
   //     try {
   //       if( !params.process ) throw ('You need more pylons!');
@@ -66,7 +58,6 @@ const store = new Vuex.Store({
   //       console.log(error)
   //     }
   //   },
-
   //   async loadingProccess({state, commit, dispatch}, params) {
   //     try {
   //       if( !params.process ) throw ('You need more pylons!');

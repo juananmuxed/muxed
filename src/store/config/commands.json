@@ -24,5 +24,19 @@
         "executionsLines": [
             {"type":"dispatch","function":"typetext","async":true,"speed":30,"color":"info"}
         ]
+    },
+    {
+        "name":"ls",
+        "params":null,
+        "executionsLines": [
+            {"type":"dispatch","function":"showFilesAndFolders","async":false}
+        ]
+    },
+    {
+        "name":"su",
+        "params":null,
+        "executionsLines": [
+            {"type":"dispatch","function":"changeUserName","async":false}
+        ]
     }
 ]

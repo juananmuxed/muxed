@@ -11,7 +11,7 @@
                 ></div>
             </div>
             <div class="line">
-                <div class="prompt" v-if="!terminal.disabledInput">
+                <div class="prompt" v-show="!terminal.disabledInput">
                     <span class="success">{{ terminal.user }}@MuXeD</span>:<span class="info">{{ terminal.actualUrl }}</span>$
                 </div>
                 <div class="fakeinput" v-show="!terminal.disabledInput">
@@ -21,11 +21,19 @@
                         type="text"
                         @input="terminal.updateText"
                         @keyup.enter="terminal.commandInput()"
-                        @keydown.tab="search($event)"
+                        @keydown.tab="terminal.search($event)"
                         :value="terminal.inputText"
                         :disabled="terminal.disabledInput"
                     >
                 </div>
+            </div>
+            <div class="line potentials" v-show="terminal.showPotential">
+                <ul v-if="terminal.potentialCommands.length > 0">
+                    <li v-for="(com, index) in terminal.potentialCommands" :key="index">{{ com.name }}</li>
+                </ul>
+                <ul v-else>
+                    <li>No search results</li>
+                </ul>
             </div>
         </div>
         <div class="overlay"></div>

@@ -51,6 +51,20 @@
                 margin-left: .2em;
             }
         }
+        &.potentials {
+            display: inline-block;
+            ul {
+                display: flex;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                li {
+                    margin: .2em;
+                    padding: .2em .4em;
+                    background-color: $color_bg_grey;
+                }
+            }
+        }
     }
     &:focus-within .fakeinput span:after{
         animation: blinkerMadaFaka 1.2s linear infinite;

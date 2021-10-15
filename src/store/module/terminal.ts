@@ -27,6 +27,9 @@ class TerminalModule extends VuexModule {
     public commands: Array<Command> = commands;
     public folders: Array<FileFolder> = files.filter(v => v.type == "D");
     public files: Array<FileFolder> = files.filter(v => v.type == "F");
+    public showPotential: Boolean = false;
+    public potentialCommands: Array<Command> = [];
+    public lastCommands: Array<String> = [];
 
     @Mutation
     public addLine(line: Line): void {
@@ -64,11 +67,26 @@ class TerminalModule extends VuexModule {
     }
 
     @Mutation
+    public setInputText(value: String): void {
+        this.inputText = value;
+    }
+
+    @Mutation
+    private changePotentialState(value: Boolean = true) {
+        this.showPotential = value;
+    }
+
+    @Mutation
+    private clearPotentialCommands() {
+        this.potentialCommands = [];
+    }
+
+    @Action
     public updateText(event: {target: HTMLInputElement, data: String | null}): void {
         if(event.data == null) {
-            this.inputText = this.inputText.slice(0, -1);
+            this.setInputText(this.inputText.slice(0, -1));
         } else {
-            this.inputText += event.target.value[event.target.value.length - 1];
+            this.setInputText(this.inputText + event.target.value[event.target.value.length - 1]);
         }
     }
 
@@ -92,6 +110,7 @@ class TerminalModule extends VuexModule {
     @Action
     public async commandInput(): Promise<void> {
         this.changeStatePrompt();
+        this.changePotentialState(false);
 
         const command: String = this.inputText.split(' ')[0]
         const params: Array<String> = this.inputText.substring(command.length + 1).split(' ')
@@ -149,6 +168,34 @@ class TerminalModule extends VuexModule {
             this.setActualPathUrl();
         }
     }
+
+    @Action
+    public search(event: {target: HTMLInputElement, preventDefault:Function}): void {
+        event.preventDefault();
+        this.checkPotentialCommands(event.target.value);
+    }
+
+    @Action
+    private checkPotentialCommands(value: string): void {
+        this.clearPotentialCommands();
+        this.commands.forEach(com => {
+            if(com.name.toLowerCase().startsWith(value.toLowerCase()) && com.name != ''){
+                this.potentialCommands.push(com);
+            }
+        });
+        if(this.potentialCommands.length > 1) {
+            this.changePotentialState();
+        } else {
+            if(this.potentialCommands.length == 1) {
+                this.changePotentialState(false);
+                this.setInputText(this.potentialCommands[0].name + ' ')
+            } else {
+                this.changePotentialState();
+            }
+        }
+    }
+
+    //TODO: Arroy Key Up Function (last commands)
 
     @Action
     private createErrorLine(text: String): void {

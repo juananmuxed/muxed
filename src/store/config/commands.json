@@ -1,28 +1,42 @@
 [
     {
         "name":"",
-        "param1":false,
-        "lines": []
+        "params":null,
+        "executionsLines": []
     },
     {
         "name":"clear",
-        "param1":false,
-        "lines": [
+        "params":null,
+        "executionsLines": [
             {"type":"commit","function":"clearTerminal","async":false}
         ]
     },
     {
         "name":"cd",
-        "param1":false,
-        "lines": [
-            {"type":"commit","function":"changePath","async":false}
+        "params":null,
+        "executionsLines": [
+            {"type":"dispatch","function":"changePathByName","async":false}
         ]
     },
     {
         "name":"type",
-        "param1":true,
-        "lines": [
+        "params":null,
+        "executionsLines": [
             {"type":"dispatch","function":"typetext","async":true,"speed":30,"color":"info"}
+        ]
+    },
+    {
+        "name":"ls",
+        "params":null,
+        "executionsLines": [
+            {"type":"dispatch","function":"showFilesAndFolders","async":false}
+        ]
+    },
+    {
+        "name":"su",
+        "params":null,
+        "executionsLines": [
+            {"type":"dispatch","function":"changeUserName","async":false}
         ]
     }
 ]

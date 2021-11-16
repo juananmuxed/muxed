@@ -41,7 +41,7 @@
         .fakeinput {
             word-break: break-all;
             float: left;
-            &:after {
+            span:after {
                 content: "";
                 display: inline-block;
                 width: .5em;
@@ -51,8 +51,22 @@
                 margin-left: .2em;
             }
         }
+        &.potentials {
+            display: inline-block;
+            ul {
+                display: flex;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                li {
+                    margin: .2em;
+                    padding: .2em .4em;
+                    background-color: $color_bg_grey;
+                }
+            }
+        }
     }
-    &:focus-within .fakeinput:after{
+    &:focus-within .fakeinput span:after{
         animation: blinkerMadaFaka 1.2s linear infinite;
         -webkit-animation: blinkerMadaFaka 1.2s linear infinite;
         width: .2em!important;
@@ -77,12 +91,15 @@
         color: transparent;
         border: 0;
         padding: 0;
-        display: block;
-        float: left;
+        display: inline-block;
         font-family: IBMVBA8 , monospace;
         font-size: 25px;
         &:focus{
             outline: none;
+        }
+        &::selection {
+            background-color: transparent;
+            color: transparent;
         }
     }
 }

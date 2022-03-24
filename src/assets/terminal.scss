@@ -38,7 +38,7 @@
         .texted{
             word-break: break-all;
         }
-        .fakeinput {
+        .fake_input {
             word-break: break-all;
             float: left;
             span:after {
@@ -66,9 +66,9 @@
             }
         }
     }
-    &:focus-within .fakeinput span:after{
-        animation: blinkerMadaFaka 1.2s linear infinite;
-        -webkit-animation: blinkerMadaFaka 1.2s linear infinite;
+    &:focus-within .fake_input span:after{
+        animation: blinkerAnimation 1.2s linear infinite;
+        -webkit-animation: blinkerAnimation 1.2s linear infinite;
         width: .2em!important;
     }
     div,span {

@@ -6,7 +6,7 @@
       <a href="https://github.com/juananmuxed">MuXeD</a>
     </sub><br><br>
     <a href="https://muxed.es/"><img src="https://img.shields.io/website?down_message=Ca%C3%ADdo&label=Web&style=flat&up_message=En%20linea&url=https%3A%2F%2Fmuxed.es%2F&logo=firefox"></a>
-    <a href=""><img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/workflow/status/juananmuxed/muxed/Deploy%20to%20web%20server/master?label=Build&logo=github"></a>
+    <a href="https://muxed.es/"><img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/workflow/status/juananmuxed/muxed/Deploy%20to%20web%20server/master?label=Build&logo=github"></a>
     <a href="https://github.com/juananmuxed/muxed/blob/master/LICENSE/"><img src="https://img.shields.io/github/license/juananmuxed/muxed?label=License"></a>
     <a href="https://discord.gg/UnBtckE"><img src="https://img.shields.io/discord/324463341819133953?color=purple&label=Discord&logo=discord"></a>
 </p>

@@ -23,10 +23,10 @@
             id="inputPrompt"
             type="text"
             @input="terminal.updateText"
-            @keyup.enter="terminal.commandInput()"
+            @keydown.enter="terminal.commandInput()"
             @keydown.tab="terminal.search($event)"
-            @keyup.up="terminal.prevCommand()"
-            @keyup.down="terminal.nextCommand()"
+            @keydown.up="terminal.prevCommand($event)"
+            @keydown.down="terminal.nextCommand($event)"
             :value="terminal.inputText"
             :disabled="terminal.disabledInput"
           />

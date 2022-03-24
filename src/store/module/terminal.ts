@@ -160,7 +160,7 @@ class TerminalModule extends VuexModule {
     const command: String = this.inputText.split(' ')[0]
     const params: Array<String> = this.inputText.substring(command.length + 1).split(' ').filter(s => s != "");
 
-    this.saveCommand();
+    if (command !== '') this.saveCommand();
     this.initialActualIndex();
 
     this.freezeLine();
@@ -208,7 +208,7 @@ class TerminalModule extends VuexModule {
   }
 
   @Action
-  public prevCommand(): void {
+  public prevCommand(event: { preventDefault: Function }): void {
     if (this.actualIndex < 0 || this.actualIndex == this.lastCommands.length) {
       this.setTemporalInputText(this.inputText);
       this.setActualIndex(this.lastCommands.length);
@@ -216,10 +216,11 @@ class TerminalModule extends VuexModule {
     this.setActualIndex(this.actualIndex - 1);
     if (this.actualIndex < 0) this.setActualIndex(0);
     this.setInputText(this.lastCommands[this.actualIndex]);
+    event.preventDefault();
   }
 
   @Action
-  public nextCommand(): void {
+  public nextCommand(event: { preventDefault: Function }): void {
     this.setActualIndex(this.actualIndex + 1);
     if (this.actualIndex >= this.lastCommands.length) {
       if (this.actualIndex == this.lastCommands.length) this.setInputText(this.temporalInputText);
@@ -227,6 +228,7 @@ class TerminalModule extends VuexModule {
     } else {
       this.setInputText(this.lastCommands[this.actualIndex]);
     }
+    event.preventDefault();
   }
 
   @Action
@@ -352,9 +354,14 @@ class TerminalModule extends VuexModule {
       window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
       this.changeStatePrompt();
       setTimeout(() => {
-        document.getElementById("inputPrompt")?.focus();
+        this.setFocus();
       }, 10);
     }, 10);
+  }
+
+  @Action
+  public setFocus(): void {
+    document.getElementById("inputPrompt")?.focus();
   }
 
   @Action

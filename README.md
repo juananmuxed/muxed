@@ -21,11 +21,11 @@
 
 - [Prompt typography](https://int10h.org/oldschool-pc-fonts/)
 
-### 📌 Versiones
+### 📌 Versions
 
 Used [SemVer](http://semver.org/) for versioning. For all versions, see [tags](https://github.com/juananmuxed/muxed/tags).
 
-### 📄 Licencia
+### 📄 License
 
 This project is under license (MIT) - see [LICENSE.md](LICENSE.md) for details.
 

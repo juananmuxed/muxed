@@ -1,0 +1,45 @@
+.m-badge {
+  display: inline-flex;
+  padding: $padding_xs $padding_sm;
+  border-radius: $rounded;
+  font-size: $font_size_small;
+  vertical-align: baseline;
+
+  &.rounded {
+    border-radius: $rounded_full;
+  }
+
+  &.primary {
+    background-color: $bg-primary__dark;
+  }
+
+  &.success {
+    background-color: $bg-success__dark;
+  }
+
+  &.warning {
+    background-color: $bg-warning__dark;
+  }
+
+  &.error {
+    background-color: $bg-error__dark;
+  }
+}
+
+.light .m-badge {
+  &.primary {
+    background-color: $bg-primary;
+  }
+
+  &.success {
+    background-color: $bg-success;
+  }
+
+  &.warning {
+    background-color: $bg-warning;
+  }
+
+  &.error {
+    background-color: $bg-error;
+  }
+}

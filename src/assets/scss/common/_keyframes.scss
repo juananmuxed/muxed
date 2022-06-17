@@ -1,0 +1,69 @@
+@keyframes blinkerAnimationLight {
+  0% {
+    background: $bg-success__dark;
+  }
+  54% {
+    background: $bg-success__dark;
+  }
+  56% {
+    background: transparent;
+  }
+  98% {
+    background: transparent;
+  }
+  100% {
+    background: $bg-success__dark;
+  }
+}
+@-webkit-keyframes blinkerAnimationLight {
+  0% {
+    background: $bg-success__dark;
+  }
+  54% {
+    background: $bg-success__dark;
+  }
+  56% {
+    background: transparent;
+  }
+  98% {
+    background: transparent;
+  }
+  100% {
+    background: $bg-success__dark;
+  }
+}
+
+@keyframes blinkerAnimation {
+  0% {
+    background: $bg-success;
+  }
+  54% {
+    background: $bg-success;
+  }
+  56% {
+    background: transparent;
+  }
+  98% {
+    background: transparent;
+  }
+  100% {
+    background: $bg-success;
+  }
+}
+@-webkit-keyframes blinkerAnimation {
+  0% {
+    background: $bg-success;
+  }
+  54% {
+    background: $bg-success;
+  }
+  56% {
+    background: transparent;
+  }
+  98% {
+    background: transparent;
+  }
+  100% {
+    background: $bg-success;
+  }
+}

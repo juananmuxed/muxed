@@ -1,7 +1,7 @@
 <p align=center>
   <img width=300 src="./media/Logo_MuXeD.png"/>
   <br>
-  <span><strong>MuXeD Portfolio</strong><br>💻 Experimental portfolio 💻<br><br>
+  <strong>MuXeD Portfolio</strong><br>💻 Portfolio 💻<br><br>
     <sub>⌨️ with ❤︎ by
       <a href="https://github.com/juananmuxed">MuXeD</a>
     </sub><br><br>
@@ -10,12 +10,6 @@
     <a href="https://github.com/juananmuxed/muxed/blob/master/LICENSE/"><img src="https://img.shields.io/github/license/juananmuxed/muxed?label=License"></a>
     <a href="https://discord.gg/UnBtckE"><img src="https://img.shields.io/discord/324463341819133953?color=purple&label=Discord&logo=discord"></a>
 </p>
-
-### 📂 Dependencies
-
-- [Vue](https://vuejs.org/)
-- [Vuex](https://vuex.vuejs.org/)
-- [Vue-router](https://router.vuejs.org/)
 
 ### 💡 Resources
 

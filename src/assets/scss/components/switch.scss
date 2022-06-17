@@ -1,0 +1,46 @@
+.m-switch {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
+
+  .slider {
+    width: 2em;
+    height: 1em;
+    border-radius: 50px;
+    transition: all $transition_ease;
+    background-color: $background;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0.2em;
+      left: 0.2em;
+      width: 0.6em;
+      height: 0.6em;
+      border-radius: 50%;
+      box-shadow: inset 0.3em -0.1em 0px 0px $background__dark;
+      background-color: $background;
+      transition: all $transition_ease;
+    }
+
+    & ~ span {
+      margin-left: 0.4em;
+    }
+  }
+
+  input {
+    position: absolute;
+    display: none;
+
+    &:checked ~ .slider {
+      background-color: $background__dark;
+
+      &::before {
+        transform: translateX(1em);
+        background-color: $background;
+        box-shadow: none;
+      }
+    }
+  }
+}

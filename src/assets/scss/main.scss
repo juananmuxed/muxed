@@ -1,0 +1,26 @@
+@import "./../fonts/fonts.scss";
+@import "common/variables";
+@import "common/texts";
+@import "common/links";
+@import "common/app";
+@import "common/keyframes";
+@import "transitions/fade";
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: $background__dark;
+  color: $text__dark;
+}
+
+body {
+  transition: background-color $transition_ease,
+    color $transition_ease;
+
+  &.light {
+    background-color: $background;
+    color: $text;
+  }
+}

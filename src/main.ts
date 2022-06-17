@@ -1,15 +1,26 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import './assets/scss/style.scss'
-import i18n from './i18n'
+import { getLS } from "@/utils/localStorage";
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import { createI18n } from "vue-i18n";
+import en from "./locales/en.json";
+import es from "./locales/es.json";
 
-Vue.config.productionTip = false
+import App from "./App.vue";
+import router from "./router";
 
-new Vue({
-  router,
-  store,
-  i18n,
-  render: h => h(App)
-}).$mount('#app')
+export const i18n = createI18n({
+  locale: getLS("lang") || "en",
+  fallbackLocale: "en",
+  messages: {
+    en: en,
+    es: es,
+  },
+});
+
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+app.use(i18n);
+
+app.mount("#app");

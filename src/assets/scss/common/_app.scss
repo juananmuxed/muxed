@@ -1,0 +1,25 @@
+#app {
+  font-family: IBMVBA8, monospace;
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: auto;
+
+  main {
+    min-height: 100%;
+    display: grid;
+    margin: 0 auto;
+    max-width: $width-content;
+    padding: 12px 20px;
+    width: auto;
+  }
+}
+
+@media (min-width: $width-content) {
+  #app main {
+    width: $width-content;
+  }
+}

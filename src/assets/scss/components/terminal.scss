@@ -1,0 +1,122 @@
+.m-terminal {
+  display: block;
+  color: $background;
+  width: 100%;
+  font-family: IBMVBA8, monospace;
+  font-size: 25px;
+  min-height: 100%;
+  .prompt {
+    width: auto;
+    margin-right: 0.4em;
+    float: left;
+  }
+  .line {
+    width: 100%;
+    .texted {
+      word-break: break-all;
+    }
+    .fake_input {
+      word-break: break-all;
+      float: left;
+      span:after {
+        content: "";
+        display: inline-block;
+        width: 0.5em;
+        background-color: $text__dark;
+        height: 1.4rem;
+        vertical-align: text-top;
+        margin-left: 0.2em;
+      }
+    }
+    &.potentials {
+      display: inline-block;
+      ul {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        li {
+          margin: 0.2em;
+          padding: 0.2em 0.4em;
+          background-color: $background_gray;
+        }
+      }
+    }
+  }
+  &:focus-within .fake_input span:after {
+    animation: blinkerAnimation 1.2s linear infinite;
+    -webkit-animation: blinkerAnimation 1.2s linear infinite;
+    width: 0.2em !important;
+  }
+  div,
+  span {
+    &.info {
+      color: $text-link !important;
+    }
+    &.success {
+      color: $bg-success !important;
+    }
+    &.error {
+      color: $bg-error !important;
+    }
+    &.error-light {
+      color: $bg-error__dark !important;
+    }
+  }
+  input {
+    width: auto;
+    background: transparent;
+    color: transparent;
+    border: 0;
+    padding: 0;
+    display: inline-block;
+    font-family: IBMVBA8, monospace;
+    font-size: 25px;
+    &:focus {
+      outline: none;
+    }
+    &::selection {
+      background-color: transparent;
+      color: transparent;
+    }
+  }
+}
+
+.light {
+  .m-terminal {
+    color: $background__dark;
+    .line {
+      .fake_input {
+        span:after {
+          background-color: $text;
+        }
+      }
+      &.potentials {
+        ul {
+          li {
+            background-color: $background_gray;
+          }
+        }
+      }
+    }
+    &:focus-within .fake_input span:after {
+      animation: blinkerAnimationLight 1.2s linear infinite;
+      -webkit-animation: blinkerAnimationLight 1.2s linear infinite;
+    }
+    div,
+    span {
+      &.info {
+        color: $text-link__dark !important;
+      }
+      &.success {
+        color: $bg-success__dark !important;
+      }
+      &.error {
+        color: $bg-error__dark !important;
+      }
+      &.error-light {
+        color: $bg-error !important;
+      }
+    }
+  }
+}

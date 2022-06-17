@@ -1,3 +1,26 @@
 {
-  "no-search-results": "Búsqueda sin resultados"
+  "menu": {
+    "home": "Inicio",
+    "about": "Sobre",
+    "terminal": ">_Terminal"
+  },
+  "titles": {
+    "home": "¡Ey, soy <span class='color-highlight'>{nickname}</span>!",
+    "about": "Cosas sobre <span class='color-highlight'>mí</span>",
+    "terminal": "<span class='color-highlight'>Terminal</span> bash"
+  },
+  "paragraphs": {
+    "home": [
+      "Texto de 1 jejejej",
+      "Texto de 2 jejejej",
+      "Texto de 3 jejejej"
+    ],
+    "about": [
+      "Texto de sobre 1 p",
+      "Texto de sobre 2 p",
+      "Texto de sobre 3 p",
+      "Texto de sobre 4 p"
+    ]
+  },
+  "beta": "Versión beta"
 }

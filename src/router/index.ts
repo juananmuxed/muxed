@@ -1,26 +1,42 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import store from '../store/index'
+import { createRouter, createWebHistory } from "vue-router";
+import { Constants } from "@/config/constants";
+import { i18n } from "@/main";
+import HomeView from "../views/HomeView.vue";
 
-Vue.use(VueRouter);
-
-const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-];
-
-const router = new VueRouter({
-  routes,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: HomeView,
+      meta: {
+        title: "home",
+      },
+    },
+    {
+      path: "/about",
+      name: "about",
+      component: () => import("../views/AboutView.vue"),
+      meta: {
+        title: "about",
+      },
+    },
+    {
+      path: "/terminal",
+      name: "terminal",
+      component: () => import("../views/TerminalView.vue"),
+      meta: {
+        title: "terminal",
+      },
+    },
+  ],
 });
 
-
-router.afterEach(async (to, from) => {
-  let title = `${store.state.terminal.user}@MuXeD:${store.state.terminal.actualUrl}`;
-  document.title = title;
-})
+router.beforeEach((to, from, next) => {
+  const title = i18n.global.t(("menu." + to.meta.title) as string);
+  document.title = `${title}@${Constants.WEB_NICKNAME}~$`;
+  next();
+});
 
 export default router;

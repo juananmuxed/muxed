@@ -1,3 +1,26 @@
 {
-  "no-search-results": "No search results"
+  "menu": {
+    "home": "Home",
+    "about": "About",
+    "terminal": ">_Terminal"
+  },
+  "titles": {
+    "home": "Hey, I'm <span class='color-highlight'>{nickname}</span>!",
+    "about": "Things about <span class='color-highlight'>me</span>",
+    "terminal": "Bash <span class='color-highlight'>terminal</span>"
+  },
+  "paragraphs": {
+    "home": [
+      "Lorem fistrum te va a hasé pupitaa te va a hasé pupitaa velit sed te voy a borrar el cerito caballo blanco caballo negroorl sexuarl labore fistro por la gloria de mi madre. Magna a wan qui incididunt ese hombree. Pupita por la gloria de mi madre dolore ese hombree tempor a wan enim ahorarr diodenoo incididunt. Jarl duis quis enim. Se calle ustée ese pedazo de hasta luego Lucas apetecan velit quietooor. Consequat torpedo papaar papaar al ataquerl. Enim jarl papaar papaar ese que llega papaar papaar minim la caidita me cago en tus muelas sed irure. ",
+      "Lorem fistrum se calle ustée cillum reprehenderit incididunt aliqua te va a hasé pupitaa aliquip. Adipisicing condemor al ataquerl occaecat. No puedor papaar papaar elit elit. Velit consectetur esse commodo incididunt me cago en tus muelas magna te va a hasé pupitaa. Pecador me cago en tus muelas se calle ustée voluptate elit. ",
+      "Lorem fistrum cillum eiusmod adipisicing. Magna va usté muy cargadoo qué dise usteer ullamco te voy a borrar el cerito adipisicing velit tempor llevame al sircoo. A wan condemor aliqua me cago en tus muelas nostrud va usté muy cargadoo minim veniam consectetur pupita. Occaecat quietooor officia reprehenderit enim. Exercitation minim aute eiusmod enim ullamco commodo enim pecador. Laboris ex diodeno apetecan ullamco et quis irure. Pupita va usté muy cargadoo et jarl ad condemor. "
+    ],
+    "about": [
+      "Text about 1 p",
+      "Text about 2 p",
+      "Text about 3 p",
+      "Text about 4 p"
+    ]
+  },
+  "beta": "Beta version"
 }

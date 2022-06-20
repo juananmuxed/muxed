@@ -11,16 +11,19 @@
   },
   "paragraphs": {
     "home": [
-      "Texto de 1 jejejej",
-      "Texto de 2 jejejej",
-      "Texto de 3 jejejej"
+      "Mi nombre real es <span class='color-highlight'>Juan Antonio Sánchez Melero</span> y soy <b>desarrollador web</b>."
     ],
     "about": [
-      "Texto de sobre 1 p",
-      "Texto de sobre 2 p",
-      "Texto de sobre 3 p",
-      "Texto de sobre 4 p"
+      "Soy <span class='color-highlight'>desarrollador</span> pero...",
+      "Desde hace años que dí el salto del diseño gráfico y el audiovisual al desarrollo web y la administración de sistemas.",
+      "Empece con la base del desarrollo, <span class='color-highlight'>HTML, CSS  y JS</span> y me he ido actualizando con frameworks y nuevas tecnologías como <span class='color-highlight'>Vue, Angular, SCSS, SASS o LESS, PHP, Node</span>, etc...",
+      "Además durante el proceso he aprendido cosas relacionadas como, administración de sistemas, bases de datos, control de versiones, metodologías agiles y demás. Vamos, lo normal.",
+      "Mis aficiones son entre otros los juegos de mesa, videojuegos, rol y miniaturas. Visita mis redes sociales para conocerme algo más.",
+      "Si quieres ver proyectos personales revisa alguno de mis favoritos:"
     ]
   },
-  "beta": "Versión beta"
+  "beta": "Versión beta",
+  "seeGitHub": "Ver en GitHub",
+  "seeMoreAbout": "Más <span class='color-highlight'>sobre mí</span>",
+  "social": "Redes sociales"
 }

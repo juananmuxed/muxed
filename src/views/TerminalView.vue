@@ -1,9 +1,10 @@
 <template>
   <div class="container">
     <h1 v-html="$t('titles.terminal') + ' >_'"></h1>
-    <p>
-      <MBadgeVue color="warning" align="top">{{ $t('beta') }}</MBadgeVue>
-    </p>
+    <h4>
+      <a href="https://github.com/juananmuxed/muxed" target="_blank">{{ $t('seeGitHub') }}</a>
+      <MBadgeVue class="margin-left" color="warning" align="top">{{ $t('beta') }}</MBadgeVue>
+    </h4>
     <div class="terminal-container">
       <MTerminalVue></MTerminalVue>
     </div>

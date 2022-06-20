@@ -1,0 +1,23 @@
+.list-links {
+  font-size: $font_size_h3;
+  display: flex;
+  flex-direction: column;
+  a {
+    cursor: pointer;
+    transition: background-color $transition_ease;
+    padding: $padding_sm;
+    &:hover {
+      background-color: $text__dark;
+    }
+  }
+}
+
+.light {
+  .list-links {
+    a {
+      &:hover {
+        background-color: $text;
+      }
+    }
+  }
+}

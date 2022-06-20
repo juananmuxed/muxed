@@ -11,16 +11,19 @@
   },
   "paragraphs": {
     "home": [
-      "Lorem fistrum te va a hasé pupitaa te va a hasé pupitaa velit sed te voy a borrar el cerito caballo blanco caballo negroorl sexuarl labore fistro por la gloria de mi madre. Magna a wan qui incididunt ese hombree. Pupita por la gloria de mi madre dolore ese hombree tempor a wan enim ahorarr diodenoo incididunt. Jarl duis quis enim. Se calle ustée ese pedazo de hasta luego Lucas apetecan velit quietooor. Consequat torpedo papaar papaar al ataquerl. Enim jarl papaar papaar ese que llega papaar papaar minim la caidita me cago en tus muelas sed irure. ",
-      "Lorem fistrum se calle ustée cillum reprehenderit incididunt aliqua te va a hasé pupitaa aliquip. Adipisicing condemor al ataquerl occaecat. No puedor papaar papaar elit elit. Velit consectetur esse commodo incididunt me cago en tus muelas magna te va a hasé pupitaa. Pecador me cago en tus muelas se calle ustée voluptate elit. ",
-      "Lorem fistrum cillum eiusmod adipisicing. Magna va usté muy cargadoo qué dise usteer ullamco te voy a borrar el cerito adipisicing velit tempor llevame al sircoo. A wan condemor aliqua me cago en tus muelas nostrud va usté muy cargadoo minim veniam consectetur pupita. Occaecat quietooor officia reprehenderit enim. Exercitation minim aute eiusmod enim ullamco commodo enim pecador. Laboris ex diodeno apetecan ullamco et quis irure. Pupita va usté muy cargadoo et jarl ad condemor. "
+      "My real name is <span class='color-highlight'>Juan Antonio Sánchez Melero</span> and I'm a <b>web developer</b>."
     ],
     "about": [
-      "Text about 1 p",
-      "Text about 2 p",
-      "Text about 3 p",
-      "Text about 4 p"
+      "I'm <span class='color-highlight'>developer</span> but...",
+      "For years I took the leap from graphic design and audiovisual to web development and system administration.",
+      "I started with the basics of development, <span class='color-highlight'>HTML, CSS and JS</span> and I have been updating with frameworks and new technologies such as <span class='color-highlight'>Vue, Angular, SCSS, SASS or LESS, PHP, Node</span>, etc...",
+      "In addition, during the process I have learned related things such as, system administration, databases, version control, agile methodologies and others. Come on, normal.",
+      "My hobbies are, among others, board games, video games, role-playing and miniatures.",
+      "If you want to see personal projects check one of my favorites:"
     ]
   },
-  "beta": "Beta version"
+  "beta": "Beta version",
+  "seeGitHub": "See in GitHub",
+  "seeMoreAbout": "More <span class='color-highlight'>about me</span>",
+  "social": "Social networks"
 }

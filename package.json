@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview --port 4173",
-    "test": "vitest --dom",
+    "test": "vitest",
     "test:unit": "vitest --environment jsdom",
     "coverage": "vitest run --coverage",
     "build-only": "vite build",

@@ -18,11 +18,12 @@
       "For years I took the leap from graphic design and audiovisual to web development and system administration.",
       "I started with the basics of development, <span class='color-highlight'>HTML, CSS and JS</span> and I have been updating with frameworks and new technologies such as <span class='color-highlight'>Vue, Angular, SCSS, SASS or LESS, PHP, Node</span>, etc...",
       "In addition, during the process I have learned related things such as, system administration, databases, version control, agile methodologies and others. Come on, normal.",
-      "My hobbies are, among others, board games, video games, role-playing and miniatures. Visit my social networks to get to know me a little more.",
-      "If you want to see personal projects check out my <a href='https://github.com/juananmuxed' target='_blank'>GitHub</a>. Some of my favorites:"
+      "My hobbies are, among others, board games, video games, role-playing and miniatures.",
+      "If you want to see personal projects check one of my favorites:"
     ]
   },
   "beta": "Beta version",
   "seeGitHub": "See in GitHub",
-  "seeMoreAbout": "More <span class='color-highlight'>about me</span>"
+  "seeMoreAbout": "More <span class='color-highlight'>about me</span>",
+  "social": "Social networks"
 }

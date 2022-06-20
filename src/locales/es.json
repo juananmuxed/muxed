@@ -19,10 +19,11 @@
       "Empece con la base del desarrollo, <span class='color-highlight'>HTML, CSS  y JS</span> y me he ido actualizando con frameworks y nuevas tecnologías como <span class='color-highlight'>Vue, Angular, SCSS, SASS o LESS, PHP, Node</span>, etc...",
       "Además durante el proceso he aprendido cosas relacionadas como, administración de sistemas, bases de datos, control de versiones, metodologías agiles y demás. Vamos, lo normal.",
       "Mis aficiones son entre otros los juegos de mesa, videojuegos, rol y miniaturas. Visita mis redes sociales para conocerme algo más.",
-      "Si quieres ver proyectos personales revisa mi <a href='https://github.com/juananmuxed' target='_blank'>GitHub</a>. Algunos de mis favoritos:"
+      "Si quieres ver proyectos personales revisa alguno de mis favoritos:"
     ]
   },
   "beta": "Versión beta",
   "seeGitHub": "Ver en GitHub",
-  "seeMoreAbout": "Más <span class='color-highlight'>sobre mí</span>"
+  "seeMoreAbout": "Más <span class='color-highlight'>sobre mí</span>",
+  "social": "Redes sociales"
 }

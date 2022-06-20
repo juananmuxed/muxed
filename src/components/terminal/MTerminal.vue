@@ -17,6 +17,7 @@
                 </div>
                 <div class="fake_input" v-show="!terminal.disabledInput && !terminal.disconnected">
                     <span>{{ terminal.inputText }}</span>
+                    <!-- TODO: update the keydown event without keys (internal) -->
                     <input id="inputPrompt" type="text" @input="terminal.updateText"
                         @keydown.enter="terminal.commandInput()" @keydown.tab="terminal.search"
                         @keydown.up="terminal.prevCommand($event)" @keydown.down="terminal.nextCommand($event)"

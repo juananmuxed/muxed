@@ -1,0 +1,91 @@
+// Vitest Snapshot v1
+
+exports[`Footer > Default 1`] = `
+<footer
+  data-v-c343a562=""
+>
+  <span
+    data-v-c343a562=""
+  >
+    <a
+      data-v-c343a562=""
+      href="https://github.com/juananmuxed"
+      target="_blank"
+    >
+      GitHub
+    </a>
+  </span>
+  <div
+    class="m-badge primary"
+    data-v-36b7fb34=""
+    data-v-c343a562=""
+    style="vertical-align: middle;"
+  >
+    <span
+      class="label"
+      data-v-36b7fb34=""
+    >
+      
+      v2.6.0
+      
+    </span>
+  </div>
+  <span
+    data-v-c343a562=""
+  >
+    © 2022 
+    <a
+      data-v-c343a562=""
+      href="https://muxed.dev"
+      target="_blank"
+    >
+      MuXeD
+    </a>
+  </span>
+</footer>
+`;
+
+exports[`Footer > Props > Default 1`] = `
+<footer
+  data-v-c343a562=""
+>
+  <span
+    data-v-c343a562=""
+  >
+    <a
+      data-v-c343a562=""
+      href="https://github.com/juananmuxed"
+      target="_blank"
+    >
+      GitHub
+    </a>
+  </span>
+  <div
+    class="m-badge primary"
+    data-v-36b7fb34=""
+    data-v-c343a562=""
+    style="vertical-align: middle;"
+  >
+    <span
+      class="label"
+      data-v-36b7fb34=""
+    >
+      
+      v2.6.0
+      
+    </span>
+  </div>
+  <span
+    data-v-c343a562=""
+  >
+    © 2022 
+    <a
+      data-v-c343a562=""
+      href="https://muxed.dev"
+      target="_blank"
+    >
+      MuXeD
+    </a>
+  </span>
+</footer>
+`;

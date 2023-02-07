@@ -21,6 +21,5 @@ jobs:
             git pull
             npm install
             git restore package-lock.json
-            npm run type-check
-            npm run build-only
+            npm run build
             cp example.htaccess dist/.htaccess

@@ -20,12 +20,12 @@ export const useLinks = defineStore("links", () => {
 
   const gitHubProjects: Link[] = [
     {
-      text: "TeamCoo",
-      url: getSocialNetworkByText("github")?.url + "/teamcoo",
-    },
-    {
       text: "MuXeD",
       url: getSocialNetworkByText("github")?.url + "/muxed",
+    },
+    {
+      text: "Clash of Spears Army Builder",
+      url: getSocialNetworkByText("github")?.url + "/cod-sheet-creator",
     },
     {
       text: "RPG Utils",
@@ -39,6 +39,10 @@ export const useLinks = defineStore("links", () => {
       text: "MuXBoT RPG",
       url: getSocialNetworkByText("github")?.url + "/muxbot-rpg",
     },
+    {
+      text: "TeamCoo",
+      url: getSocialNetworkByText("github")?.url + "/teamcoo",
+    }
   ];
 
   function getSocialNetworkByText(name: string): Link | undefined {

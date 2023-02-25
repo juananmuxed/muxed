@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
-            nvm use 18.14.2
+            node -v
             git pull
             npm install
             git restore package-lock.json

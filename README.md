@@ -22,7 +22,7 @@ Used [SemVer](http://semver.org/) for versioning. For all versions, see [tags](h
 
 ### 📄 License
 
-This project is under license (MIT) - see [LICENSE.md](LICENSE.md) for details.
+This project is under license (MIT) - see [LICENSE](LICENSE) for details.
 
 ### 🎁 Donations
 

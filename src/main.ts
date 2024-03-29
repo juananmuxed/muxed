@@ -1,26 +1,18 @@
-import { getLS } from "@/utils/localStorage";
-import { createApp } from "vue";
-import { createPinia } from "pinia";
-import { createI18n } from "vue-i18n";
-import en from "./locales/en.json";
-import es from "./locales/es.json";
+import { createApp } from 'vue';
 
-import App from "./App.vue";
-import router from "./router";
-
-export const i18n = createI18n({
-  locale: getLS("lang") || "en",
-  fallbackLocale: "en",
-  messages: {
-    en: en,
-    es: es,
-  },
-});
+import App from './App.vue';
+import { installRouter } from './router/Router';
+import { installI18n, loadLanguageAsync } from './plugins/I18n';
+import { LOCAL_STORAGE } from './constants/Keys';
 
 const app = createApp(App);
 
-app.use(createPinia());
-app.use(router);
-app.use(i18n);
+async function init() {
+  installI18n(app);
+  await loadLanguageAsync(localStorage.getItem(LOCAL_STORAGE.LANG) || 'en');
+  installRouter(app);
 
-app.mount("#app");
+  app.mount('#app');
+}
+
+init();

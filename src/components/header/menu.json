@@ -3,9 +3,5 @@
     { "name": "home", "url": "/" },
     { "name": "about", "url": "/about" },
     { "name": "terminal", "url": "/terminal" }
-  ],
-  "locales": {
-    "en": "English",
-    "es": "Español"
-  }
+  ]
 }

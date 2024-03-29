@@ -1,67 +1,68 @@
-import { randomSpeed } from "./../utils/random";
-import { controllerLog } from "./../utils/logs";
-import { sleep } from "./../utils/asyncFunctions";
-import { clearOption } from "./../utils/options";
-import { getLS, setLS } from "@/utils/localStorage";
-import { Constants } from "./../config/constants";
-import type { ILine } from "./../types/ILine";
-import { ref, type Ref } from "vue";
-import { defineStore } from "pinia";
-import allFiles from "@/stores/config/fileFolders.json";
-import allCommands from "@/stores/config/commands.json";
+import { ref, type Ref } from 'vue';
+
+import type { PromptLine } from '../types/PromptLine';
+
+import { randomSpeed } from '../utils/random';
+import { controllerLog } from '../utils/logs';
+import { sleep } from '../utils/asyncFunctions';
+import { clearOption } from '../utils/options';
+import { getLS, setLS } from 'src/utils/localStorage';
+import allFiles from 'src/composables/config/fileFolders.json';
+import allCommands from 'src/composables/config/commands.json';
+import { LOCAL_STORAGE } from 'src/constants/Keys';
 
 export type JSONFile = typeof allFiles[number];
 export type JSONCommand = typeof allCommands[number];
 
-export const useTerminalStore = defineStore("terminal", () => {
+export const useTerminal = () => {
   const homeFolder: JSONFile | undefined = (
     allFiles as JSONFile[]
-  ).find((v) => v.id == 0);
+  ).find((value) => value.id === 0);
 
   const commandsStored = getLS(
-    `${Constants.COOKIE_NAME}_${Constants.COOKIE_NAME_COMMANDS}`
+    `${LOCAL_STORAGE.COMMANDS}_${LOCAL_STORAGE.COMMANDS}`,
   );
 
   const disabledInput = ref(false);
   const actualUrl = ref(homeFolder?.name);
-  const inputText = ref("");
-  const user = ref("guest");
+  const inputText = ref('');
+  const user = ref('guest');
   const showPotential = ref(false);
   const actualIndex = ref(-1);
-  const temporalInputText = ref("");
+  const temporalInputText = ref('');
   const disconnected = ref(false);
 
   const actualFolder: Ref<JSONFile> = ref(
-    homeFolder || ({} as JSONFile)
+    homeFolder || ({} as JSONFile),
   );
 
   const tempFolder: Ref<JSONFile> = ref(
-    homeFolder || ({} as JSONFile)
+    homeFolder || ({} as JSONFile),
   );
 
-  const lines: Ref<ILine[]> = ref([]);
+  const lines: Ref<PromptLine[]> = ref([]);
 
   const commands: Ref<JSONCommand[]> = ref(allCommands);
 
-  const folders: Ref<JSONFile[]> = ref(getFolderByType("D"));
+  const folders: Ref<JSONFile[]> = ref(getFolderByType('D'));
 
-  const files: Ref<JSONFile[]> = ref(getFolderByType("F"));
+  const files: Ref<JSONFile[]> = ref(getFolderByType('F'));
   const potentialCommands: Ref<JSONCommand[]> = ref([]);
 
   const lastCommands: Ref<string[]> = ref(
-    JSON.parse(commandsStored || "[]")
+    JSON.parse(commandsStored || '[]'),
   );
 
   function getFolderByType(type: string): JSONFile[] {
-    return allFiles.filter((v) => v.type === type) as JSONFile[];
+    return allFiles.filter((value) => value.type === type) as JSONFile[];
   }
 
-  function addLine(line: ILine): void {
+  function addLine(line: PromptLine): void {
     lines.value.push(line);
   }
 
   function endCommand(): void {
-    inputText.value = "";
+    inputText.value = '';
   }
 
   function clearTerminal(): void {
@@ -76,7 +77,7 @@ export const useTerminalStore = defineStore("terminal", () => {
     lines.value[lines.value.length - 1].text += string;
   }
 
-  function changeLastLineColor(color: String): void {
+  function changeLastLineColor(color: string): void {
     lines.value[lines.value.length - 1].color = color;
   }
 
@@ -85,7 +86,7 @@ export const useTerminalStore = defineStore("terminal", () => {
   }
 
   function changeStatePrompt(): void {
-    disabledInput.value = !disabledInput;
+    disabledInput.value = !disabledInput.value;
   }
 
   function setFolder(folder: JSONFile): void {
@@ -96,9 +97,9 @@ export const useTerminalStore = defineStore("terminal", () => {
     actualUrl.value = url;
   }
 
-  function getTempFolderById(id: Number | null): void {
+  function getTempFolderById(id: number | null): void {
     tempFolder.value = folders.value.filter(
-      (folder) => folder.id == id
+      (folder) => folder.id == id,
     )[0];
   }
 
@@ -140,33 +141,33 @@ export const useTerminalStore = defineStore("terminal", () => {
       setInputText(inputText.value.slice(0, -1));
     } else {
       setInputText(
-        inputText.value +
-          (event.target as HTMLInputElement).value[
+        inputText.value
+          + (event.target as HTMLInputElement).value[
             (event.target as HTMLInputElement).value.length - 1
-          ]
+          ],
       );
     }
   }
 
-  function setFolderById(id: Number = 0): void {
-    setFolder(folders.value.filter((v) => v.id == id)[0]);
+  function setFolderById(id: number = 0): void {
+    setFolder(folders.value.filter((value) => value.id === id)[0]);
   }
 
   function setActualPathUrl(): void {
     let url = actualFolder.value.name;
-    let parent = actualFolder.value.parent;
+    let { parent } = actualFolder.value;
     while (parent || parent === 0) {
-      let parentFolder = folders.value.filter(
-        (v) => v.id == parent
+      const parentFolder = folders.value.filter(
+        (v) => v.id === parent,
       )[0];
       parent = parentFolder.parent;
-      url = parentFolder.name + "/" + url;
+      url = `${parentFolder.name}/${url}`;
     }
     setActualUrl(url);
     setActualPathTitle(url);
   }
 
-  function setActualPathTitle(url: String): void {
+  function setActualPathTitle(url: string): void {
     document.title = `${user.value}@MuXeD:${url}`;
   }
 
@@ -175,23 +176,22 @@ export const useTerminalStore = defineStore("terminal", () => {
       changeStatePrompt();
       changePotentialState(false);
 
-      const command: String = inputText.value.split(" ")[0];
-      const params: Array<String> = inputText.value
+      const command: string = inputText.value.split(' ')[0];
+      const params: Array<string> = inputText.value
         .substring(command.length + 1)
-        .split(" ")
-        .filter((s) => s != "");
+        .split(' ')
+        .filter((s) => s != '');
 
-      if (command !== "") saveCommand();
+      if (command !== '') saveCommand();
       initialActualIndex();
 
       freezeLine();
 
-      const existCommand: JSONCommand | undefined =
-        commands.value.find((comm) => comm.name == command);
+      const existCommand: JSONCommand | undefined = commands.value.find((comm) => comm.name == command);
 
       if (!existCommand) {
-        controllerLog("The resistance is futile", "warning");
-        createErrorLine("MuXbash: " + command + " command not found");
+        controllerLog('The resistance is futile', 'warning');
+        createErrorLine(`MuXbash: ${command} command not found`);
         return finalCommand();
       }
 
@@ -199,8 +199,8 @@ export const useTerminalStore = defineStore("terminal", () => {
         const line = existCommand.executionsLines[x];
         if (!executableFunctions[line.function]) {
           controllerLog(
-            "Command not added to executableFunctions Object.",
-            "error"
+            'Command not added to executableFunctions Object.',
+            'error',
           );
           return finalCommand();
         }
@@ -212,7 +212,7 @@ export const useTerminalStore = defineStore("terminal", () => {
       }
       return finalCommand();
     } catch (error) {
-      controllerLog("Error: " + error, "error");
+      controllerLog(`Error: ${error}`, 'error');
     }
   }
 
@@ -220,10 +220,9 @@ export const useTerminalStore = defineStore("terminal", () => {
     const storageName = `${Constants.COOKIE_NAME}_${Constants.COOKIE_NAME_COMMANDS}`;
     const savedCommands = getLS(storageName);
 
-    const commands: Array<String> =
-      savedCommands != null && typeof savedCommands == "string"
-        ? JSON.parse(savedCommands)
-        : [];
+    const commands: Array<string> = savedCommands != null && typeof savedCommands === 'string'
+      ? JSON.parse(savedCommands)
+      : [];
 
     commands.push(inputText.value);
     lastCommands.value.push(inputText.value);
@@ -235,14 +234,14 @@ export const useTerminalStore = defineStore("terminal", () => {
 
     setLS(
       `${Constants.COOKIE_NAME}_${Constants.COOKIE_NAME_COMMANDS}`,
-      JSON.stringify(commands)
+      JSON.stringify(commands),
     );
   }
 
   function prevCommand(event: { preventDefault: Function }): void {
     if (
-      actualIndex.value < 0 ||
-      actualIndex.value === lastCommands.value.length
+      actualIndex.value < 0
+      || actualIndex.value === lastCommands.value.length
     ) {
       setTemporalInputText(inputText.value);
       setActualIndex(lastCommands.value.length);
@@ -256,8 +255,7 @@ export const useTerminalStore = defineStore("terminal", () => {
   function nextCommand(event: { preventDefault: Function }): void {
     setActualIndex(actualIndex.value + 1);
     if (actualIndex.value >= lastCommands.value.length) {
-      if (actualIndex.value == lastCommands.value.length)
-        setInputText(temporalInputText.value);
+      if (actualIndex.value == lastCommands.value.length) setInputText(temporalInputText.value);
       setActualIndex(lastCommands.value.length);
     } else {
       setInputText(lastCommands.value[actualIndex.value]);
@@ -265,35 +263,35 @@ export const useTerminalStore = defineStore("terminal", () => {
     event.preventDefault();
   }
 
-  function changePathByName(params: Array<String>): void {
+  function changePathByName(params: Array<string>): void {
     if (params[0]) {
-      if (params[0] == ".") {
+      if (params[0] == '.') {
         return;
       }
-      let folderName: String = params[0];
-      if (params[0] == ".." || params[0] == "/") {
+      let folderName: string = params[0];
+      if (params[0] == '..' || params[0] == '/') {
         if (actualFolder.value.parent == null) {
           return createErrorLine(
-            "You have no permission to this folder"
+            'You have no permission to this folder',
           );
         }
         getTempFolderById(actualFolder.value.parent);
         folderName = tempFolder.value.name;
       }
       const folderValid: JSONFile | undefined = folders.value.find(
-        (folder) => folder.name == folderName
+        (folder) => folder.name == folderName,
       );
-      if (!!folderValid) {
+      if (folderValid) {
         setFolder(folderValid);
         setActualPathUrl();
       } else {
         createErrorLine(
-          "This folder not contain " + params[0] + " folder"
+          `This folder not contain ${params[0]} folder`,
         );
       }
     } else {
       const folderValid: JSONFile | undefined = folders.value.filter(
-        (folder) => folder.name == "~"
+        (folder) => folder.name == '~',
       )[0];
       setFolder(folderValid);
       setActualPathUrl();
@@ -312,73 +310,70 @@ export const useTerminalStore = defineStore("terminal", () => {
     clearPotentialCommands();
     commands.value.forEach((com) => {
       if (
-        com.name.toLowerCase().startsWith(value.toLowerCase()) &&
-        com.name != ""
+        com.name.toLowerCase().startsWith(value.toLowerCase())
+        && com.name != ''
       ) {
         potentialCommands.value.push(com);
       }
     });
     if (potentialCommands.value.length > 1) {
       changePotentialState();
+    } else if (potentialCommands.value.length == 1) {
+      changePotentialState(false);
+      setInputText(`${potentialCommands.value[0].name} `);
     } else {
-      if (potentialCommands.value.length == 1) {
-        changePotentialState(false);
-        setInputText(potentialCommands.value[0].name + " ");
-      } else {
-        changePotentialState();
-      }
+      changePotentialState();
     }
   }
 
-  async function typeText(params: Array<String>): Promise<void> {
+  async function typeText(params: Array<string>): Promise<void> {
     try {
-      const colorOption = clearOption(params, "c");
-      const color =
-        colorOption.value !== "" ? colorOption.value : "info";
+      const colorOption = clearOption(params, 'c');
+      const color = colorOption.value !== '' ? colorOption.value : 'info';
       params = colorOption.params;
-      const speedOption = clearOption(params, "s");
-      const speed = speedOption.value !== "" ? speedOption.value : 0;
+      const speedOption = clearOption(params, 's');
+      const speed = speedOption.value !== '' ? speedOption.value : 0;
       params = speedOption.params;
       if (params.length > 0) {
         createEmptyLine();
         changeLastLineColor(color);
-        const stringType = params.join(" ");
+        const stringType = params.join(' ');
         for (let i = 0; i < stringType.length; i++) {
           addTextLastLine(stringType[i]);
           await sleep(randomSpeed(Number(speed), Number(speed) + 60));
         }
       } else {
-        createErrorLine("Add a text to type");
+        createErrorLine('Add a text to type');
       }
     } catch (error) {
-      controllerLog("Error: " + error, "error");
+      controllerLog(`Error: ${error}`, 'error');
     }
   }
 
-  function createErrorLine(text: String): void {
-    let errorLine: ILine = {
-      type: "echo",
-      text: text,
-      path: actualUrl.value as String,
-      color: "error-light",
+  function createErrorLine(text: string): void {
+    const errorLine: PromptLine = {
+      type: 'echo',
+      text,
+      path: actualUrl.value as string,
+      color: 'error-light',
     };
     addLine(errorLine);
   }
 
   function createEmptyLine(): void {
-    let emptyLine: ILine = {
-      type: "echo",
-      text: "",
-      path: actualUrl.value as String,
+    const emptyLine: PromptLine = {
+      type: 'echo',
+      text: '',
+      path: actualUrl.value as string,
     };
     addLine(emptyLine);
   }
 
   function freezeLine(): void {
-    const line: ILine = {
-      type: "prompt",
-      text: inputText.value + "<br>",
-      path: actualUrl.value as String,
+    const line: PromptLine = {
+      type: 'prompt',
+      text: `${inputText.value}<br>`,
+      path: actualUrl.value as string,
     };
     addLine(line);
     endCommand();
@@ -388,8 +383,8 @@ export const useTerminalStore = defineStore("terminal", () => {
     setTimeout(() => {
       window.scrollTo(
         0,
-        document.body.scrollHeight ||
-          document.documentElement.scrollHeight
+        document.body.scrollHeight
+          || document.documentElement.scrollHeight,
       );
       changeStatePrompt();
       setTimeout(() => {
@@ -399,21 +394,21 @@ export const useTerminalStore = defineStore("terminal", () => {
   }
 
   function setFocus(): void {
-    document.getElementById("inputPrompt")?.focus();
+    document.getElementById('inputPrompt')?.focus();
   }
 
   async function exit(): Promise<void> {
-    const line: ILine = {
-      type: "info",
-      text: "Connection to muxed.dev closed.",
-      path: actualUrl.value as String,
-      color: "info",
+    const line: PromptLine = {
+      type: 'info',
+      text: 'Connection to muxed.dev closed.',
+      path: actualUrl.value as string,
+      color: 'info',
     };
-    const lineLogout: ILine = {
-      type: "info",
-      text: "logout",
-      path: actualUrl.value as String,
-      color: "info",
+    const lineLogout: PromptLine = {
+      type: 'info',
+      text: 'logout',
+      path: actualUrl.value as string,
+      color: 'info',
     };
     try {
       disconnectPrompt();
@@ -421,7 +416,7 @@ export const useTerminalStore = defineStore("terminal", () => {
       await sleep(800);
       addLine(line);
     } catch (error) {
-      controllerLog("Error: " + error, "error");
+      controllerLog(`Error: ${error}`, 'error');
     }
   }
 
@@ -441,11 +436,11 @@ export const useTerminalStore = defineStore("terminal", () => {
     // TODO: make sh and bash
   }
 
-  const executableFunctions: { [key: string]: Function } = {
-    clearTerminal: clearTerminal,
-    changePathByName: changePathByName,
-    typeText: typeText,
-    exit: exit,
+  const executableFunctions: { [key: string]: (params: string[])=> void } = {
+    clearTerminal,
+    changePathByName,
+    typeText,
+    exit,
     // changeUserName: changeUserName,
     // showFilesAndFolders: showFilesAndFolders,
     // getActualUser: getActualUser,
@@ -475,4 +470,4 @@ export const useTerminalStore = defineStore("terminal", () => {
     prevCommand,
     nextCommand,
   };
-});
+};

@@ -16,7 +16,7 @@ const model = defineModel({ type: Boolean, default: false });
 defineProps({
   label: {
     type: String,
-    default: null,
+    default: '',
   },
 });
 </script>

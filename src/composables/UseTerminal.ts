@@ -1,121 +1,120 @@
-import { ref, type Ref } from 'vue';
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-use-before-define */
+import { ref } from 'vue';
 
 import type { PromptLine } from '../types/PromptLine';
 
-import { randomSpeed } from '../utils/random';
-import { controllerLog } from '../utils/logs';
-import { sleep } from '../utils/asyncFunctions';
-import { clearOption } from '../utils/options';
-import { getLS, setLS } from 'src/utils/localStorage';
-import allFiles from 'src/composables/config/fileFolders.json';
-import allCommands from 'src/composables/config/commands.json';
+import { randomSpeed } from '../utils/Randomize';
+import { controllerLog } from '../utils/Logger';
+import { sleep } from '../utils/Await';
+import { clearOption } from '../utils/Option';
+import { deleteLS, getLS, setLS } from 'src/utils/Storage';
 import { LOCAL_STORAGE } from 'src/constants/Keys';
-
-export type JSONFile = typeof allFiles[number];
-export type JSONCommand = typeof allCommands[number];
+import { APP_CONST } from 'src/constants/App';
+import { FileType, TerminalFile } from 'src/types/Files';
+import { FILE_FOLDERS } from './config/FileFolders';
+import { COMMANDS } from './config/Commands';
+import { Command } from 'src/types/Commands';
 
 export const useTerminal = () => {
-  const homeFolder: JSONFile | undefined = (
-    allFiles as JSONFile[]
-  ).find((value) => value.id === 0);
+  const homeFolder = FILE_FOLDERS.find((value) => value.id === 0);
+  const commandsStored = getLS(LOCAL_STORAGE.COMMANDS);
+  const userStored = getLS(LOCAL_STORAGE.TERMINAL_USER);
 
-  const commandsStored = getLS(
-    `${LOCAL_STORAGE.COMMANDS}_${LOCAL_STORAGE.COMMANDS}`,
-  );
+  const lastCommands = ref(commandsStored ? JSON.parse(commandsStored) : []);
+  const user = ref(userStored || 'guest');
 
   const disabledInput = ref(false);
-  const actualUrl = ref(homeFolder?.name);
+  const actualUrl = ref(homeFolder?.name || '');
   const inputText = ref('');
-  const user = ref('guest');
   const showPotential = ref(false);
   const actualIndex = ref(-1);
   const temporalInputText = ref('');
   const disconnected = ref(false);
 
-  const actualFolder: Ref<JSONFile> = ref(
-    homeFolder || ({} as JSONFile),
-  );
+  watch(user, (newUser) => {
+    if (!newUser) deleteLS(LOCAL_STORAGE.TERMINAL_USER);
+    else setLS(LOCAL_STORAGE.TERMINAL_USER, newUser);
+  });
 
-  const tempFolder: Ref<JSONFile> = ref(
-    homeFolder || ({} as JSONFile),
-  );
+  watch(lastCommands, (commands) => {
+    setLS(LOCAL_STORAGE.COMMANDS, JSON.stringify(commands));
+  }, { deep: true });
 
-  const lines: Ref<PromptLine[]> = ref([]);
+  const actualFolder = ref<TerminalFile | undefined>(homeFolder);
+  const tempFolder = ref<TerminalFile | undefined>(homeFolder);
 
-  const commands: Ref<JSONCommand[]> = ref(allCommands);
+  const lines = ref<PromptLine[]>([]);
+  const commands = ref<Command[]>(COMMANDS);
 
-  const folders: Ref<JSONFile[]> = ref(getFolderByType('D'));
+  const folders = ref<TerminalFile[]>(getFilesByTypes('D'));
+  const files = ref<TerminalFile[]>(getFilesByTypes('F'));
 
-  const files: Ref<JSONFile[]> = ref(getFolderByType('F'));
-  const potentialCommands: Ref<JSONCommand[]> = ref([]);
+  const potentialCommands = ref<Command[]>([]);
 
-  const lastCommands: Ref<string[]> = ref(
-    JSON.parse(commandsStored || '[]'),
-  );
-
-  function getFolderByType(type: string): JSONFile[] {
-    return allFiles.filter((value) => value.type === type) as JSONFile[];
+  function getFilesByTypes(type: FileType) {
+    return FILE_FOLDERS.filter((value) => value.type === type);
   }
 
-  function addLine(line: PromptLine): void {
+  function addLine(line: PromptLine) {
     lines.value.push(line);
   }
 
-  function endCommand(): void {
+  function endCommand() {
     inputText.value = '';
   }
 
-  function clearTerminal(): void {
+  function clearTerminal() {
     lines.value = [];
   }
 
-  function setLastCommands(commands: string[]): void {
-    lastCommands.value = commands;
+  function setLastCommands(newCommands: string[]) {
+    lastCommands.value = newCommands;
   }
 
-  function addTextLastLine(string: string): void {
+  function addTextLastLine(string: string) {
     lines.value[lines.value.length - 1].text += string;
   }
 
-  function changeLastLineColor(color: string): void {
+  function changeLastLineColor(color: string) {
     lines.value[lines.value.length - 1].color = color;
   }
 
-  function deleteLastLine(): void {
+  function deleteLastLine() {
     lines.value.pop();
   }
 
-  function changeStatePrompt(): void {
+  function changeStatePrompt() {
     disabledInput.value = !disabledInput.value;
   }
 
-  function setFolder(folder: JSONFile): void {
+  function setFolder(folder?: TerminalFile) {
     actualFolder.value = folder;
   }
 
-  function setActualUrl(url: string): void {
-    actualUrl.value = url;
+  function setActualUrl(url?: string) {
+    actualUrl.value = url || homeFolder?.name || '';
   }
 
-  function getTempFolderById(id: number | null): void {
-    tempFolder.value = folders.value.filter(
-      (folder) => folder.id == id,
-    )[0];
+  function getTempFolderById(id: number | null) {
+    [tempFolder.value] = folders.value.filter(
+      (folder) => folder.id === id,
+    );
   }
 
-  function setInputText(value: string): void {
+  function setInputText(value: string) {
     inputText.value = value;
   }
 
-  function setTemporalInputText(value: string): void {
+  function setTemporalInputText(value: string) {
     temporalInputText.value = value;
   }
 
-  function initialActualIndex(): void {
+  function initialActualIndex() {
     actualIndex.value = -1;
   }
 
-  function setActualIndex(value: number): void {
+  function setActualIndex(value: number) {
     actualIndex.value = value;
   }
 
@@ -129,13 +128,14 @@ export const useTerminal = () => {
 
   function disconnectPrompt() {
     disconnected.value = true;
+    user.value = 'guest';
   }
 
   function connectPrompt() {
     disconnected.value = false;
   }
 
-  function updateText(inputEvent: Event): void {
+  function updateText(inputEvent: Event) {
     const event = inputEvent as InputEvent;
     if (event.data == null) {
       setInputText(inputText.value.slice(0, -1));
@@ -149,54 +149,55 @@ export const useTerminal = () => {
     }
   }
 
-  function setFolderById(id: number = 0): void {
+  function setFolderById(id: number = 0) {
     setFolder(folders.value.filter((value) => value.id === id)[0]);
   }
 
-  function setActualPathUrl(): void {
-    let url = actualFolder.value.name;
-    let { parent } = actualFolder.value;
+  function setActualPathUrl() {
+    let url = actualFolder.value?.name;
+    let parent = actualFolder.value?.parent;
     while (parent || parent === 0) {
-      const parentFolder = folders.value.filter(
-        (v) => v.id === parent,
-      )[0];
-      parent = parentFolder.parent;
-      url = `${parentFolder.name}/${url}`;
+      const parentFolder = folders.value.find(
+        // eslint-disable-next-line no-loop-func
+        (value) => value.id === parent,
+      );
+      parent = parentFolder?.parent;
+      url = `${parentFolder?.name}/${url}`;
     }
     setActualUrl(url);
     setActualPathTitle(url);
   }
 
-  function setActualPathTitle(url: string): void {
-    document.title = `${user.value}@MuXeD:${url}`;
+  function setActualPathTitle(url?: string) {
+    document.title = `${user.value}@MuXeD:${url || homeFolder?.name}`;
   }
 
-  async function commandInput(): Promise<void> {
+  async function commandInput() {
     try {
       changeStatePrompt();
       changePotentialState(false);
 
       const command: string = inputText.value.split(' ')[0];
-      const params: Array<string> = inputText.value
+      const params = inputText.value
         .substring(command.length + 1)
         .split(' ')
-        .filter((s) => s != '');
+        .filter((value) => value !== '');
 
       if (command !== '') saveCommand();
       initialActualIndex();
 
       freezeLine();
 
-      const existCommand: JSONCommand | undefined = commands.value.find((comm) => comm.name == command);
+      const existCommand = commands.value.find((_command) => _command.name === command);
 
       if (!existCommand) {
         controllerLog('The resistance is futile', 'warning');
-        createErrorLine(`MuXbash: ${command} command not found`);
+        createErrorLine(`bash: ${command} command not found`);
         return finalCommand();
       }
 
-      for (let x = 0; x < existCommand.executionsLines.length; x++) {
-        const line = existCommand.executionsLines[x];
+      for (let index = 0; index < existCommand.executionsLines.length; index++) {
+        const line = existCommand.executionsLines[index];
         if (!executableFunctions[line.function]) {
           controllerLog(
             'Command not added to executableFunctions Object.',
@@ -213,32 +214,19 @@ export const useTerminal = () => {
       return finalCommand();
     } catch (error) {
       controllerLog(`Error: ${error}`, 'error');
+      return () => setTimeout(() => {}, 1);
     }
   }
 
-  function saveCommand(): void {
-    const storageName = `${Constants.COOKIE_NAME}_${Constants.COOKIE_NAME_COMMANDS}`;
-    const savedCommands = getLS(storageName);
-
-    const commands: Array<string> = savedCommands != null && typeof savedCommands === 'string'
-      ? JSON.parse(savedCommands)
-      : [];
-
-    commands.push(inputText.value);
+  function saveCommand() {
     lastCommands.value.push(inputText.value);
 
-    if (commands.length > Constants.COMMANDS_LIMIT + 1) {
-      commands.shift();
+    if (lastCommands.value.length > APP_CONST.COMMANDS_MAX_LINES + 1) {
       lastCommands.value.shift();
     }
-
-    setLS(
-      `${Constants.COOKIE_NAME}_${Constants.COOKIE_NAME_COMMANDS}`,
-      JSON.stringify(commands),
-    );
   }
 
-  function prevCommand(event: { preventDefault: Function }): void {
+  function prevCommand(event: KeyboardEvent) {
     if (
       actualIndex.value < 0
       || actualIndex.value === lastCommands.value.length
@@ -252,10 +240,10 @@ export const useTerminal = () => {
     event.preventDefault();
   }
 
-  function nextCommand(event: { preventDefault: Function }): void {
+  function nextCommand(event: KeyboardEvent) {
     setActualIndex(actualIndex.value + 1);
     if (actualIndex.value >= lastCommands.value.length) {
-      if (actualIndex.value == lastCommands.value.length) setInputText(temporalInputText.value);
+      if (actualIndex.value === lastCommands.value.length) setInputText(temporalInputText.value);
       setActualIndex(lastCommands.value.length);
     } else {
       setInputText(lastCommands.value[actualIndex.value]);
@@ -263,42 +251,44 @@ export const useTerminal = () => {
     event.preventDefault();
   }
 
-  function changePathByName(params: Array<string>): void {
-    if (params[0]) {
-      if (params[0] == '.') {
+  function changePathByName(params: (string | undefined)[]) {
+    const [firstParam] = params;
+    if (firstParam) {
+      if (firstParam === '.') {
         return;
       }
-      let folderName: string = params[0];
-      if (params[0] == '..' || params[0] == '/') {
-        if (actualFolder.value.parent == null) {
-          return createErrorLine(
+      let [folderName] = params;
+      if (firstParam === '..' || firstParam === '/') {
+        if (!actualFolder.value?.parent) {
+          createErrorLine(
             'You have no permission to this folder',
           );
+          return;
         }
         getTempFolderById(actualFolder.value.parent);
-        folderName = tempFolder.value.name;
+        folderName = tempFolder.value?.name || homeFolder?.name;
       }
-      const folderValid: JSONFile | undefined = folders.value.find(
-        (folder) => folder.name == folderName,
+      const folderValid = folders.value.find(
+        (folder) => folder.name === folderName,
       );
       if (folderValid) {
         setFolder(folderValid);
         setActualPathUrl();
       } else {
         createErrorLine(
-          `This folder not contain ${params[0]} folder`,
+          `This folder not contain ${folderName} folder`,
         );
       }
     } else {
-      const folderValid: JSONFile | undefined = folders.value.filter(
-        (folder) => folder.name == '~',
-      )[0];
+      const folderValid = folders.value.find(
+        (folder) => folder.name === '~',
+      );
       setFolder(folderValid);
       setActualPathUrl();
     }
   }
 
-  function search(inputEvent: Event): void {
+  function search(inputEvent: Event) {
     const event = inputEvent as InputEvent;
     event.preventDefault();
     checkPotentialCommands((event.target as HTMLInputElement).value);
@@ -306,19 +296,19 @@ export const useTerminal = () => {
     // if (event.target.value.toLowerCase().startsWith("cd") && potentialCommands.length == 1)
   }
 
-  function checkPotentialCommands(value: string): void {
+  function checkPotentialCommands(value: string) {
     clearPotentialCommands();
     commands.value.forEach((com) => {
       if (
         com.name.toLowerCase().startsWith(value.toLowerCase())
-        && com.name != ''
+        && com.name !== ''
       ) {
         potentialCommands.value.push(com);
       }
     });
     if (potentialCommands.value.length > 1) {
       changePotentialState();
-    } else if (potentialCommands.value.length == 1) {
+    } else if (potentialCommands.value.length === 1) {
       changePotentialState(false);
       setInputText(`${potentialCommands.value[0].name} `);
     } else {
@@ -326,14 +316,15 @@ export const useTerminal = () => {
     }
   }
 
-  async function typeText(params: Array<string>): Promise<void> {
+  async function typeText(params: string[]): Promise<void> {
     try {
+      let _params = params;
       const colorOption = clearOption(params, 'c');
       const color = colorOption.value !== '' ? colorOption.value : 'info';
-      params = colorOption.params;
+      _params = colorOption.params;
       const speedOption = clearOption(params, 's');
       const speed = speedOption.value !== '' ? speedOption.value : 0;
-      params = speedOption.params;
+      _params = speedOption.params;
       if (params.length > 0) {
         createEmptyLine();
         changeLastLineColor(color);
@@ -350,36 +341,36 @@ export const useTerminal = () => {
     }
   }
 
-  function createErrorLine(text: string): void {
+  function createErrorLine(text: string) {
     const errorLine: PromptLine = {
       type: 'echo',
       text,
-      path: actualUrl.value as string,
+      path: actualUrl.value,
       color: 'error-light',
     };
     addLine(errorLine);
   }
 
-  function createEmptyLine(): void {
+  function createEmptyLine() {
     const emptyLine: PromptLine = {
       type: 'echo',
       text: '',
-      path: actualUrl.value as string,
+      path: actualUrl.value,
     };
     addLine(emptyLine);
   }
 
-  function freezeLine(): void {
+  function freezeLine() {
     const line: PromptLine = {
       type: 'prompt',
       text: `${inputText.value}<br>`,
-      path: actualUrl.value as string,
+      path: actualUrl.value,
     };
     addLine(line);
     endCommand();
   }
 
-  function finalCommand(): void {
+  function finalCommand() {
     setTimeout(() => {
       window.scrollTo(
         0,
@@ -393,7 +384,7 @@ export const useTerminal = () => {
     }, 10);
   }
 
-  function setFocus(): void {
+  function setFocus() {
     document.getElementById('inputPrompt')?.focus();
   }
 
@@ -401,13 +392,13 @@ export const useTerminal = () => {
     const line: PromptLine = {
       type: 'info',
       text: 'Connection to muxed.dev closed.',
-      path: actualUrl.value as string,
+      path: actualUrl.value,
       color: 'info',
     };
     const lineLogout: PromptLine = {
       type: 'info',
       text: 'logout',
-      path: actualUrl.value as string,
+      path: actualUrl.value,
       color: 'info',
     };
     try {
@@ -436,7 +427,7 @@ export const useTerminal = () => {
     // TODO: make sh and bash
   }
 
-  const executableFunctions: { [key: string]: (params: string[])=> void } = {
+  const executableFunctions: { [key: string]: (params: string[])=> Promise<void> | void } = {
     clearTerminal,
     changePathByName,
     typeText,

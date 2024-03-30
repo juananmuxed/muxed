@@ -9,7 +9,7 @@
       </MBadgeVue>
     </h4>
     <div class="terminal-container">
-      <!-- <MTerminalVue /> -->
+      <MTerminal />
     </div>
   </div>
 </template>

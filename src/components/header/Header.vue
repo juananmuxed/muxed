@@ -2,9 +2,9 @@
   <header>
     <nav>
       <ul>
-        <li v-for="(link, index) in menu.links" :key="index">
-          <RouterLink :to="link.url">
-            {{ $t(`menu.${link.name}`) }}
+        <li v-for="(menu, index) in getMenu()" :key="index">
+          <RouterLink v-if="menu.show && menu.url" :to="{ name: menu.url }">
+            {{ $t(menu.title) }}
           </RouterLink>
         </li>
         <li>
@@ -27,12 +27,11 @@ import { RouterLink } from 'vue-router';
 import { ref, watch } from 'vue';
 
 import { useDark } from 'src/composables/UseDark';
-import menu from './menu.json';
 import { availableLocales, loadLanguageAsync } from 'src/plugins/I18n';
-import { getLS } from 'src/utils/localStorage';
+import { getLS } from 'src/utils/Storage';
 import { LOCAL_STORAGE } from 'src/constants/Keys';
 import { useTitle } from 'src/composables/UseTitle';
-import router from 'src/router/Router';
+import router, { getMenu } from 'src/router/Router';
 
 const dark = useDark();
 const title = useTitle();

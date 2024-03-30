@@ -3,6 +3,13 @@ import { App } from 'vue';
 
 import { useTitle } from 'src/composables/UseTitle';
 
+export type MenuItem = {
+  title: string;
+  url?: string;
+  show?: boolean;
+}
+type Menu = MenuItem[]
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -29,6 +36,19 @@ const routes: RouteRecordRaw[] = [
     },
   },
 ];
+
+export function getMenu() {
+  return routes.filter((route) => !route.meta?.noMenu).map(routeToMenu).filter((route) => route) as Menu;
+}
+
+function routeToMenu(route: RouteRecordRaw) {
+  const item = {
+    title: route.meta?.titleTag || route.name || '',
+    url: route.name,
+    show: !route.meta?.noMenu,
+  } as MenuItem;
+  return item;
+}
 
 export const router = createRouter({
   history: createWebHistory(),

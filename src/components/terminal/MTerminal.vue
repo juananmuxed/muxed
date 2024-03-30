@@ -3,7 +3,7 @@
     <div class="typed">
       <div v-for="(line, index) in terminal.lines.value" :key="index" class="line">
         <div v-if="line.type == 'prompt'" class="prompt">
-          <span class="success">{{ terminal.user.value }}@MuXeD</span>:<span class="info">{{
+          <span class="success">{{ line.user }}@MuXeD</span>:<span class="info">{{
             line.path
           }}</span>$
         </div>
@@ -36,7 +36,9 @@
           <li>{{ $t("others.noSearchResults") }}</li>
         </ul>
       </div>
-      <!-- TODO: button to reconnect -->
+      <button v-if="terminal.disconnected.value" @click="terminal.connect">
+        {{ $t('buttons.reconnectBash') }}
+      </button>
       <!-- TODO: input to questions in commands -->
     </div>
     <div class="overlay" />
@@ -50,6 +52,13 @@ const terminal = useTerminal();
 
 const hasPotentialCommands = computed(() => terminal.potentialCommands.value.length > 0);
 const showPrompt = computed(() => !terminal.disabledInput.value && !terminal.disconnected.value);
+
+async function init() {
+  await terminal.welcomeLines();
+  terminal.setFocus();
+}
+
+init();
 </script>
 
 <style scoped src="@/assets/scss/components/terminal.scss" />

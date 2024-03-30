@@ -1,8 +1,14 @@
+import { useTerminal } from 'src/composables/UseTerminal';
+
+const terminal = useTerminal();
+
+type ExecutableFunction = keyof typeof terminal.executableFunctions;
+
 export interface ExecutableLine {
-  function: string;
-  async: boolean;
-  speed: number;
-  color: string;
+  function: ExecutableFunction;
+  async?: boolean;
+  speed?: number;
+  color?: string;
 }
 
 export interface Command {

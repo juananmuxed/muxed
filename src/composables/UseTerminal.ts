@@ -2,11 +2,11 @@
 /* eslint-disable no-use-before-define */
 import { ref } from 'vue';
 
-import type { PromptLine } from '../types/PromptLine';
+import type { PromptLine, PromptLineFixed } from '../types/PromptLine';
 
 import { randomSpeed } from '../utils/Randomize';
 import { controllerLog } from '../utils/Logger';
-import { sleep } from '../utils/Await';
+import { emptyPromise, sleep } from '../utils/Await';
 import { clearOption } from '../utils/Option';
 import { deleteLS, getLS, setLS } from 'src/utils/Storage';
 import { LOCAL_STORAGE } from 'src/constants/Keys';
@@ -44,7 +44,7 @@ export const useTerminal = () => {
   const actualFolder = ref<TerminalFile | undefined>(homeFolder);
   const tempFolder = ref<TerminalFile | undefined>(homeFolder);
 
-  const lines = ref<PromptLine[]>([]);
+  const lines = ref<PromptLineFixed[]>([]);
   const commands = ref<Command[]>(COMMANDS);
 
   const folders = ref<TerminalFile[]>(getFilesByTypes('D'));
@@ -57,7 +57,7 @@ export const useTerminal = () => {
   }
 
   function addLine(line: PromptLine) {
-    lines.value.push(line);
+    lines.value.push({ ...line, user: user.value });
   }
 
   function endCommand() {
@@ -68,20 +68,12 @@ export const useTerminal = () => {
     lines.value = [];
   }
 
-  function setLastCommands(newCommands: string[]) {
-    lastCommands.value = newCommands;
-  }
-
   function addTextLastLine(string: string) {
     lines.value[lines.value.length - 1].text += string;
   }
 
   function changeLastLineColor(color: string) {
     lines.value[lines.value.length - 1].color = color;
-  }
-
-  function deleteLastLine() {
-    lines.value.pop();
   }
 
   function changeStatePrompt() {
@@ -128,7 +120,6 @@ export const useTerminal = () => {
 
   function disconnectPrompt() {
     disconnected.value = true;
-    user.value = 'guest';
   }
 
   function connectPrompt() {
@@ -214,7 +205,7 @@ export const useTerminal = () => {
       return finalCommand();
     } catch (error) {
       controllerLog(`Error: ${error}`, 'error');
-      return () => setTimeout(() => {}, 1);
+      return emptyPromise;
     }
   }
 
@@ -342,31 +333,28 @@ export const useTerminal = () => {
   }
 
   function createErrorLine(text: string) {
-    const errorLine: PromptLine = {
+    addLine({
       type: 'echo',
       text,
       path: actualUrl.value,
       color: 'error-light',
-    };
-    addLine(errorLine);
+    });
   }
 
   function createEmptyLine() {
-    const emptyLine: PromptLine = {
+    addLine({
       type: 'echo',
       text: '',
       path: actualUrl.value,
-    };
-    addLine(emptyLine);
+    });
   }
 
   function freezeLine() {
-    const line: PromptLine = {
+    addLine({
       type: 'prompt',
       text: `${inputText.value}<br>`,
       path: actualUrl.value,
-    };
-    addLine(line);
+    });
     endCommand();
   }
 
@@ -388,31 +376,64 @@ export const useTerminal = () => {
     document.getElementById('inputPrompt')?.focus();
   }
 
-  async function exit(): Promise<void> {
-    const line: PromptLine = {
-      type: 'info',
-      text: 'Connection to muxed.dev closed.',
-      path: actualUrl.value,
-      color: 'info',
-    };
-    const lineLogout: PromptLine = {
-      type: 'info',
-      text: 'logout',
-      path: actualUrl.value,
-      color: 'info',
-    };
+  async function exit() {
     try {
-      disconnectPrompt();
-      addLine(lineLogout);
+      addLine({
+        type: 'info',
+        text: 'logout',
+        path: actualUrl.value,
+        color: 'info',
+      });
       await sleep(800);
-      addLine(line);
+      addLine({
+        type: 'info',
+        text: 'Connection to muxed.dev closed.',
+        path: actualUrl.value,
+        color: 'info',
+      });
+      disconnectPrompt();
     } catch (error) {
       controllerLog(`Error: ${error}`, 'error');
     }
   }
 
-  function changeUserName() {
-    // TODO: make su
+  async function connect() {
+    user.value = 'guest';
+    await welcomeLines();
+    connectPrompt();
+
+    await sleep(10);
+    setFocus();
+  }
+
+  async function welcomeLines() {
+    changeStatePrompt();
+    addLine({
+      type: 'info',
+      text: 'Connecting...',
+      color: 'error',
+    });
+    await sleep(3000);
+    addLine({
+      type: 'info',
+      text: 'Welcome to muxed.dev',
+      color: 'info',
+    });
+    addLine({
+      type: 'info',
+      text: `User: ${user.value}`,
+      color: 'success',
+    });
+    changeStatePrompt();
+  }
+
+  function changeUserName(params: (string | undefined)[]) {
+    const [firstParam] = params;
+    if (!firstParam) {
+      createErrorLine('Using \'su\' command add param user \'su user\'');
+    } else {
+      user.value = firstParam;
+    }
   }
 
   function showFilesAndFolders() {
@@ -427,15 +448,15 @@ export const useTerminal = () => {
     // TODO: make sh and bash
   }
 
-  const executableFunctions: { [key: string]: (params: string[])=> Promise<void> | void } = {
+  const executableFunctions = {
     clearTerminal,
     changePathByName,
     typeText,
     exit,
-    // changeUserName: changeUserName,
-    // showFilesAndFolders: showFilesAndFolders,
-    // getActualUser: getActualUser,
-    // executeFile: executeFile,
+    changeUserName,
+    showFilesAndFolders,
+    getActualUser,
+    executeFile,
   };
 
   return {
@@ -455,7 +476,11 @@ export const useTerminal = () => {
     actualIndex,
     temporalInputText,
     disconnected,
+    executableFunctions,
+    welcomeLines,
+    setFocus,
     commandInput,
+    connect,
     updateText,
     search,
     prevCommand,

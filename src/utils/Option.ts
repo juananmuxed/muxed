@@ -1,12 +1,14 @@
-export default interface Option {
-  value: String;
-  params: Array<String>;
+/* eslint-disable no-use-before-define */
+
+export interface Option {
+  value: string;
+  params: string[];
   index: number;
 }
 
 export const clearOption = (
-  params: Array<String>,
-  optionString: String
+  params: string[],
+  optionString: string,
 ): Option => {
   const option = checkOptions(params, optionString);
   return {
@@ -17,24 +19,24 @@ export const clearOption = (
 };
 
 export const checkOptions = (
-  params: Array<String>,
-  option: String
+  params: string[],
+  option: string,
 ): Option => {
-  const indexOption = params.findIndex((v) => v == `-${option}`);
+  const indexOption = params.findIndex((value) => value === `-${option}`);
   if (indexOption >= 0) {
     return {
       value: params[indexOption + 1],
       index: indexOption,
-      params: params,
+      params,
     };
   }
-  return { value: "", index: -1, params: params };
+  return { value: '', index: -1, params };
 };
 
 export const deleteOption = (
-  params: Array<String>,
-  option: Option
-): Array<String> => {
+  params: string[],
+  option: Option,
+): string[] => {
   if (option.index >= 0) params.splice(option.index, 2);
   return params;
 };

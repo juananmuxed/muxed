@@ -1,5 +1,7 @@
+export type PromptLineType = 'prompt' | 'echo' | 'info';
+
 export interface PromptLine {
-  type: string;
+  type: PromptLineType;
   text: string;
   path: string;
   color?: string;

@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue';
 
-import { getLS, setLS } from 'src/utils/localStorage';
+import { getLS, setLS } from 'src/utils/Storage';
 import { LOCAL_STORAGE } from 'src/constants/Keys';
 
 export const useDark = () => {

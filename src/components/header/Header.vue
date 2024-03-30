@@ -26,8 +26,8 @@
 import { RouterLink } from 'vue-router';
 import { ref, watch } from 'vue';
 
+import { useDark } from 'src/composables/UseDark';
 import menu from './menu.json';
-import { useDark } from 'src/composables/Dark';
 import { availableLocales, loadLanguageAsync } from 'src/plugins/I18n';
 import { getLS } from 'src/utils/localStorage';
 import { LOCAL_STORAGE } from 'src/constants/Keys';

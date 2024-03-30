@@ -399,8 +399,8 @@ export const useTerminal = () => {
 
   async function connect() {
     user.value = 'guest';
-    await welcomeLines();
     connectPrompt();
+    await welcomeLines();
 
     await sleep(10);
     setFocus();
@@ -413,7 +413,7 @@ export const useTerminal = () => {
       text: 'Connecting...',
       color: 'error',
     });
-    await sleep(3000);
+    await sleep(1400);
     addLine({
       type: 'info',
       text: 'Welcome to muxed.dev',

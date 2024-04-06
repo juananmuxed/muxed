@@ -17,7 +17,6 @@
         </div>
         <div v-show="showPrompt" class="fake_input">
           <span>{{ terminal.inputText.value }}</span>
-          <!-- TODO: update the keydown event without keys (internal) -->
           <input
             id="inputPrompt" type="text" :value="terminal.inputText.value"
             :disabled="terminal.disabledInput.value" @input="terminal.updateText"
@@ -32,14 +31,17 @@
             {{ com.name }}
           </li>
         </ul>
-        <ul v-else>
-          <li>{{ $t("others.noSearchResults") }}</li>
+      </div>
+      <div v-show="terminal.showPotentialFolders.value" class="line potentials">
+        <ul v-if="hasPotentialFolders">
+          <li v-for="(com, index) in terminal.potentialFolders.value" :key="index">
+            {{ com.name }}
+          </li>
         </ul>
       </div>
       <button v-if="terminal.disconnected.value" @click="terminal.connect">
         {{ $t('buttons.reconnectBash') }}
       </button>
-      <!-- TODO: input to questions in commands -->
     </div>
     <div class="overlay" />
   </div>
@@ -51,6 +53,7 @@ import { useTerminal } from 'src/composables/UseTerminal';
 const terminal = useTerminal();
 
 const hasPotentialCommands = computed(() => terminal.potentialCommands.value.length > 0);
+const hasPotentialFolders = computed(() => terminal.potentialFolders.value.length > 0);
 const showPrompt = computed(() => !terminal.disabledInput.value && !terminal.disconnected.value);
 
 async function init() {

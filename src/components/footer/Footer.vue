@@ -3,9 +3,9 @@
     <span v-for="(link, index) in links.socialNetworks" :key="index + '-social-links'">
       <a :href="link.url" target="_blank">{{ link.text }}</a>
     </span>
-    <MBadgeVue color="primary" align="middle">
+    <MBadge color="primary" align="middle">
       v{{ configPackage.version }}
-    </MBadgeVue>
+    </MBadge>
     <span>© {{ new Date().getFullYear() }} <a href="https://muxed.dev" target="_blank">{{ APP_CONST.NAME
     }}</a></span>
   </footer>

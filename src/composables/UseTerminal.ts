@@ -2,12 +2,12 @@
 /* eslint-disable no-use-before-define */
 import { ref } from 'vue';
 
-import type { PromptLine, PromptLineFixed } from '../types/PromptLine';
+import type { PromptColor, PromptLine, PromptLineFixed } from '../types/PromptLine';
 
 import { randomSpeed } from '../utils/Randomize';
 import { controllerLog } from '../utils/Logger';
 import { emptyPromise, sleep } from '../utils/Await';
-import { clearOption } from '../utils/Option';
+import { TerminalOptions } from '../utils/Option';
 import { deleteLS, getLS, setLS } from 'src/utils/Storage';
 import { LOCAL_STORAGE } from 'src/constants/Keys';
 import { APP_CONST } from 'src/constants/App';
@@ -28,6 +28,7 @@ export const useTerminal = () => {
   const actualUrl = ref(homeFolder?.name || '');
   const inputText = ref('');
   const showPotential = ref(false);
+  const showPotentialFolders = ref(false);
   const actualIndex = ref(-1);
   const temporalInputText = ref('');
   const disconnected = ref(false);
@@ -51,6 +52,16 @@ export const useTerminal = () => {
   const files = ref<TerminalFile[]>(getFilesByTypes('F'));
 
   const potentialCommands = ref<Command[]>([]);
+  const potentialFolders = ref<TerminalFile[]>([]);
+
+  const command = computed(() => inputText.value.split(' ')[0]);
+  const commandOptions = computed(() => inputText.value
+    .substring(command.value.length + 1)
+    .split(' ')
+    .filter((value) => value !== ''));
+  const commandHasFileSearch = computed(() => commands.value
+    .some((_command) => _command.name === command.value && _command.searchFiles));
+  const hasOptions = computed(() => commandOptions.value.length > 0);
 
   function getFilesByTypes(type: FileType) {
     return FILE_FOLDERS.filter((value) => value.type === type);
@@ -72,7 +83,7 @@ export const useTerminal = () => {
     lines.value[lines.value.length - 1].text += string;
   }
 
-  function changeLastLineColor(color: string) {
+  function changeLastLineColor(color: PromptColor) {
     lines.value[lines.value.length - 1].color = color;
   }
 
@@ -88,7 +99,7 @@ export const useTerminal = () => {
     actualUrl.value = url || homeFolder?.name || '';
   }
 
-  function getTempFolderById(id: number | null) {
+  function getTempFolderById(id?: number) {
     [tempFolder.value] = folders.value.filter(
       (folder) => folder.id === id,
     );
@@ -114,8 +125,16 @@ export const useTerminal = () => {
     showPotential.value = value;
   }
 
+  function changePotentialFolderState(value: boolean = true) {
+    showPotentialFolders.value = value;
+  }
+
   function clearPotentialCommands() {
     potentialCommands.value = [];
+  }
+
+  function clearPotentialFolders() {
+    potentialFolders.value = [];
   }
 
   function disconnectPrompt() {
@@ -140,8 +159,8 @@ export const useTerminal = () => {
     }
   }
 
-  function setFolderById(id: number = 0) {
-    setFolder(folders.value.filter((value) => value.id === id)[0]);
+  function getChildFoldersFiles(id: number = 0) {
+    return FILE_FOLDERS.filter((folder) => folder.parent === id);
   }
 
   function setActualPathUrl() {
@@ -167,23 +186,17 @@ export const useTerminal = () => {
     try {
       changeStatePrompt();
       changePotentialState(false);
+      changePotentialFolderState(false);
 
-      const command: string = inputText.value.split(' ')[0];
-      const params = inputText.value
-        .substring(command.length + 1)
-        .split(' ')
-        .filter((value) => value !== '');
+      const existCommand = commands.value.find((_command) => _command.name === command.value);
 
-      if (command !== '') saveCommand();
+      if (command.value !== '') saveCommand();
       initialActualIndex();
-
       freezeLine();
-
-      const existCommand = commands.value.find((_command) => _command.name === command);
 
       if (!existCommand) {
         controllerLog('The resistance is futile', 'warning');
-        createErrorLine(`bash: ${command} command not found`);
+        createErrorLine(`bash: ${command.value} command not found`);
         return finalCommand();
       }
 
@@ -197,9 +210,9 @@ export const useTerminal = () => {
           return finalCommand();
         }
         if (line.async) {
-          await executableFunctions[line.function](params);
+          await executableFunctions[line.function]();
         } else {
-          executableFunctions[line.function](params);
+          executableFunctions[line.function]();
         }
       }
       return finalCommand();
@@ -242,13 +255,13 @@ export const useTerminal = () => {
     event.preventDefault();
   }
 
-  function changePathByName(params: (string | undefined)[]) {
-    const [firstParam] = params;
+  function changePathByName() {
+    const [firstParam] = commandOptions.value;
     if (firstParam) {
       if (firstParam === '.') {
         return;
       }
-      let [folderName] = params;
+      let [folderName] = commandOptions.value;
       if (firstParam === '..' || firstParam === '/') {
         if (!actualFolder.value?.parent) {
           createErrorLine(
@@ -256,18 +269,18 @@ export const useTerminal = () => {
           );
           return;
         }
-        getTempFolderById(actualFolder.value.parent);
-        folderName = tempFolder.value?.name || homeFolder?.name;
+        getTempFolderById(actualFolder.value?.parent);
+        folderName = tempFolder.value?.name || homeFolder?.name || '';
       }
       const folderValid = folders.value.find(
-        (folder) => folder.name === folderName,
+        (folder) => folder.name === folderName.replace(/\/$/, ''),
       );
       if (folderValid) {
         setFolder(folderValid);
         setActualPathUrl();
       } else {
         createErrorLine(
-          `This folder not contain ${folderName} folder`,
+          `This folder not contain '${folderName}' folder`,
         );
       }
     } else {
@@ -282,16 +295,46 @@ export const useTerminal = () => {
   function search(inputEvent: Event) {
     const event = inputEvent as InputEvent;
     event.preventDefault();
-    checkPotentialCommands((event.target as HTMLInputElement).value);
-    // TODO: check if commands is a special commands like "cd"
-    // if (event.target.value.toLowerCase().startsWith("cd") && potentialCommands.length == 1)
+    if (!hasOptions.value) {
+      checkPotentialCommands();
+      return;
+    }
+    if (commandHasFileSearch.value) {
+      checkPotentialFolders();
+    }
   }
 
-  function checkPotentialCommands(value: string) {
+  function checkPotentialFolders() {
+    clearPotentialFolders();
+    if (potentialCommands.value.length === 0) {
+      const commandComplete = commands.value.find((_command) => _command.name === command.value);
+      commandComplete && potentialCommands.value.push(commandComplete);
+    }
+    // TODO: use temporal path
+    getChildFoldersFiles(actualFolder.value?.id).forEach((folder) => {
+      if (
+        folder.name.toLowerCase().startsWith(commandOptions.value[0].toLowerCase())
+        && folder.name !== ''
+      ) {
+        potentialFolders.value.push(folder);
+      }
+    });
+    if (potentialFolders.value.length > 1) {
+      changePotentialFolderState();
+    } else if (potentialFolders.value.length === 1) {
+      changePotentialFolderState(false);
+      setInputText(`${potentialCommands.value[0].name} ${potentialFolders.value[0].name}/`);
+      clearPotentialFolders();
+    } else {
+      changePotentialFolderState();
+    }
+  }
+
+  function checkPotentialCommands() {
     clearPotentialCommands();
     commands.value.forEach((com) => {
       if (
-        com.name.toLowerCase().startsWith(value.toLowerCase())
+        com.name.toLowerCase().startsWith(command.value.toLowerCase())
         && com.name !== ''
       ) {
         potentialCommands.value.push(com);
@@ -302,27 +345,24 @@ export const useTerminal = () => {
     } else if (potentialCommands.value.length === 1) {
       changePotentialState(false);
       setInputText(`${potentialCommands.value[0].name} `);
+      clearPotentialCommands();
     } else {
       changePotentialState();
     }
   }
 
-  async function typeText(params: string[]): Promise<void> {
+  async function typeText() {
     try {
-      let _params = params;
-      const colorOption = clearOption(params, 'c');
-      const color = colorOption.value !== '' ? colorOption.value : 'info';
-      _params = colorOption.params;
-      const speedOption = clearOption(params, 's');
-      const speed = speedOption.value !== '' ? speedOption.value : 0;
-      _params = speedOption.params;
-      if (params.length > 0) {
+      const options = new TerminalOptions(commandOptions.value);
+      const colorOption = options.getOption('c', true);
+      const speedOption = options.getOption('s', true);
+      if (commandOptions.value.length > 0) {
         createEmptyLine();
-        changeLastLineColor(color);
-        const stringType = params.join(' ');
+        changeLastLineColor((colorOption?.value || 'info') as PromptColor);
+        const stringType = options.getParamsWithoutOptions().join(' ');
         for (let i = 0; i < stringType.length; i++) {
           addTextLastLine(stringType[i]);
-          await sleep(randomSpeed(Number(speed), Number(speed) + 60));
+          await sleep(randomSpeed(Number(speedOption?.value || 0), Number(speedOption?.value || 0) + 60));
         }
       } else {
         createErrorLine('Add a text to type');
@@ -355,7 +395,6 @@ export const useTerminal = () => {
       text: `${inputText.value}<br>`,
       path: actualUrl.value,
     });
-    endCommand();
   }
 
   function finalCommand() {
@@ -365,6 +404,7 @@ export const useTerminal = () => {
         document.body.scrollHeight
           || document.documentElement.scrollHeight,
       );
+      endCommand();
       changeStatePrompt();
       setTimeout(() => {
         setFocus();
@@ -427,8 +467,8 @@ export const useTerminal = () => {
     changeStatePrompt();
   }
 
-  function changeUserName(params: (string | undefined)[]) {
-    const [firstParam] = params;
+  function changeUserName() {
+    const [firstParam] = commandOptions.value;
     if (!firstParam) {
       createErrorLine('Using \'su\' command add param user \'su user\'');
     } else {
@@ -437,11 +477,46 @@ export const useTerminal = () => {
   }
 
   function showFilesAndFolders() {
-    // TODO: make ls
+    changeStatePrompt();
+    const options = new TerminalOptions(commandOptions.value);
+    const childFiles = getChildFoldersFiles(actualFolder.value?.id);
+    const allFiles = options.getOption('a');
+    const complex = options.getOption('l');
+    if (allFiles) {
+      addLine({
+        type: 'info',
+        text: !complex ? './' : 'drwxr-xr-- MuXeD 4096 Apr 28 ./',
+        color: 'info',
+      });
+      addLine({
+        type: 'info',
+        text: !complex ? '../' : 'drwxr-xr-- MuXeD 4096 Apr 28 ../',
+        color: 'info',
+      });
+    }
+    childFiles.forEach((file) => {
+      const completeName = file.type === 'D' ? `${file.name}/` : `${file.name}.${file.extension}`;
+      const isDirectory = file.type === 'D' ? 'd' : '-';
+      const permits = isDirectory + file.permits.join('');
+      const date = `${file.creationDate.toLocaleString('en', { month: 'short' })} ${file.creationDate.getDate()}`;
+      const text = `${permits} ${file.owner} ${file.size} ${date} ${completeName}`;
+      addLine({
+        type: 'info',
+        text: !complex ? completeName : text,
+        color: file.type === 'D' ? 'info' : 'success',
+      });
+    });
+    changeStatePrompt();
   }
 
   function getActualUser() {
-    // TODO: make whoami
+    changeStatePrompt();
+    addLine({
+      type: 'info',
+      text: user.value,
+      color: 'success',
+    });
+    finalCommand();
   }
 
   function executeFile() {
@@ -471,7 +546,9 @@ export const useTerminal = () => {
     folders,
     files,
     showPotential,
+    showPotentialFolders,
     potentialCommands,
+    potentialFolders,
     lastCommands,
     actualIndex,
     temporalInputText,

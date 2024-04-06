@@ -21,8 +21,8 @@ export const FILE_FOLDERS = [
     extension: 'md',
     parent: 0,
     permits: [
-      'rwx',
-      'r-x',
+      'rw-',
+      'r--',
       'r--',
     ],
     size: 62004,

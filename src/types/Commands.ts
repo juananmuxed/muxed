@@ -15,4 +15,5 @@ export interface Command {
   name: string ;
   params?: string[];
   executionsLines: ExecutableLine[];
+  searchFiles?: boolean;
 }

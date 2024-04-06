@@ -16,6 +16,7 @@ export const COMMANDS = [
   },
   {
     name: 'cd',
+    searchFiles: true,
     executionsLines: [
       {
         function: 'changePathByName',
@@ -36,6 +37,7 @@ export const COMMANDS = [
   },
   {
     name: 'ls',
+    searchFiles: true,
     executionsLines: [
       {
         function: 'showFilesAndFolders',

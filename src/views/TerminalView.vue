@@ -4,9 +4,9 @@
     <h1 v-html="$t('titles.terminal') + ' >_'" />
     <h4>
       <a href="https://github.com/juananmuxed/muxed" target="_blank">{{ $t('others.seeGitHub') }}</a>
-      <MBadgeVue class="margin-left" color="warning" align="top">
+      <MBadge class="margin-left" color="warning" align="top">
         {{ $t('others.beta') }}
-      </MBadgeVue>
+      </MBadge>
     </h4>
     <div class="terminal-container">
       <MTerminal />
@@ -16,6 +16,3 @@
 
 <script setup lang="ts">
 </script>
-
-<style scoped>
-</style>

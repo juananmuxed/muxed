@@ -474,6 +474,7 @@ export const useTerminal = () => {
     } else {
       user.value = firstParam;
     }
+    setActualPathUrl();
   }
 
   function showFilesAndFolders() {

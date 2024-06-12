@@ -44,6 +44,7 @@ export const useTerminal = () => {
 
   const actualFolder = ref<TerminalFile | undefined>(homeFolder);
   const tempFolder = ref<TerminalFile | undefined>(homeFolder);
+  const folderTemp = ref<TerminalFile>();
 
   const lines = ref<PromptLineFixed[]>([]);
   const commands = ref<Command[]>(COMMANDS);
@@ -55,13 +56,20 @@ export const useTerminal = () => {
   const potentialFolders = ref<TerminalFile[]>([]);
 
   const command = computed(() => inputText.value.split(' ')[0]);
+
   const commandOptions = computed(() => inputText.value
     .substring(command.value.length + 1)
     .split(' ')
     .filter((value) => value !== ''));
+
   const commandHasFileSearch = computed(() => commands.value
     .some((_command) => _command.name === command.value && _command.searchFiles));
+
   const hasOptions = computed(() => commandOptions.value.length > 0);
+
+  const commandTemp = computed(() => (potentialCommands.value.length === 0
+    ? commands.value.find((_command) => _command.name === command.value)
+    : undefined));
 
   function getFilesByTypes(type: FileType) {
     return FILE_FOLDERS.filter((value) => value.type === type);
@@ -135,6 +143,10 @@ export const useTerminal = () => {
 
   function clearPotentialFolders() {
     potentialFolders.value = [];
+  }
+
+  function clearFolderTemp() {
+    folderTemp.value = undefined;
   }
 
   function disconnectPrompt() {
@@ -284,6 +296,7 @@ export const useTerminal = () => {
       if (folderValid) {
         setFolder(folderValid);
         setActualPathUrl();
+        clearFolderTemp();
       } else {
         createErrorLine(
           `This folder not contain '${folderName}' folder`,
@@ -311,26 +324,30 @@ export const useTerminal = () => {
     }
   }
 
-  function setLastCommand() {
-    if (potentialCommands.value.length === 0) {
-      const commandComplete = commands.value.find((_command) => _command.name === command.value);
-      commandComplete && potentialCommands.value.push(commandComplete);
-    }
-  }
-
   function checkPotentialFolders() {
     clearPotentialFolders();
-    setLastCommand();
 
-    // TODO: use temporal path
-    potentialFolders.value = getChildFoldersFiles(actualFolder.value?.id)
+    const foldersArray = hasOptions.value ? commandOptions.value[0].split('/') : [];
+    const lastFolder = foldersArray[foldersArray.length - 1];
+    const childFolders = getChildFoldersFiles(folderTemp.value?.id || actualFolder.value?.id);
+
+    potentialFolders.value = lastFolder ? childFolders
       .filter((folder) => folder.name.toLowerCase()
-        .startsWith(commandOptions.value[0].toLowerCase())
-        && folder.name !== '');
+        .startsWith(lastFolder.toLowerCase())
+    && folder.name !== '') : childFolders;
+
+    if (lastFolder !== '') {
+      clearFolderTemp();
+    }
 
     if (potentialFolders.value.length === 1) {
       changePotentialFolderState(false);
-      setInputText(`${potentialCommands.value[0].name} ${potentialFolders.value[0].name}/`);
+
+      [folderTemp.value] = potentialFolders.value;
+      foldersArray.pop();
+      foldersArray.push(folderTemp.value.name);
+
+      setInputText(`${commandTemp.value?.name} ${foldersArray.join('/')}/`);
       clearPotentialFolders();
     } else {
       changePotentialFolderState();
@@ -347,6 +364,7 @@ export const useTerminal = () => {
     if (potentialCommands.value.length === 1) {
       changePotentialState(false);
       setInputText(`${potentialCommands.value[0].name} `);
+      checkPotentialFolders();
       clearPotentialCommands();
     } else {
       changePotentialState();

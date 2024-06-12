@@ -295,6 +295,7 @@ export const useTerminal = () => {
   function search(inputEvent: Event) {
     const event = inputEvent as InputEvent;
     event.preventDefault();
+
     if (!hasOptions.value) {
       checkPotentialCommands();
       return;
@@ -304,24 +305,24 @@ export const useTerminal = () => {
     }
   }
 
-  function checkPotentialFolders() {
-    clearPotentialFolders();
+  function setLastCommand() {
     if (potentialCommands.value.length === 0) {
       const commandComplete = commands.value.find((_command) => _command.name === command.value);
       commandComplete && potentialCommands.value.push(commandComplete);
     }
+  }
+
+  function checkPotentialFolders() {
+    clearPotentialFolders();
+    setLastCommand();
+
     // TODO: use temporal path
-    getChildFoldersFiles(actualFolder.value?.id).forEach((folder) => {
-      if (
-        folder.name.toLowerCase().startsWith(commandOptions.value[0].toLowerCase())
-        && folder.name !== ''
-      ) {
-        potentialFolders.value.push(folder);
-      }
-    });
-    if (potentialFolders.value.length > 1) {
-      changePotentialFolderState();
-    } else if (potentialFolders.value.length === 1) {
+    potentialFolders.value = getChildFoldersFiles(actualFolder.value?.id)
+      .filter((folder) => folder.name.toLowerCase()
+        .startsWith(commandOptions.value[0].toLowerCase())
+        && folder.name !== '');
+
+    if (potentialFolders.value.length === 1) {
       changePotentialFolderState(false);
       setInputText(`${potentialCommands.value[0].name} ${potentialFolders.value[0].name}/`);
       clearPotentialFolders();
@@ -332,17 +333,12 @@ export const useTerminal = () => {
 
   function checkPotentialCommands() {
     clearPotentialCommands();
-    commands.value.forEach((com) => {
-      if (
-        com.name.toLowerCase().startsWith(command.value.toLowerCase())
-        && com.name !== ''
-      ) {
-        potentialCommands.value.push(com);
-      }
-    });
-    if (potentialCommands.value.length > 1) {
-      changePotentialState();
-    } else if (potentialCommands.value.length === 1) {
+
+    potentialCommands.value = commands.value.filter((com) => com.name.toLowerCase()
+      .startsWith(command.value.toLowerCase())
+        && com.name !== '');
+
+    if (potentialCommands.value.length === 1) {
       changePotentialState(false);
       setInputText(`${potentialCommands.value[0].name} `);
       clearPotentialCommands();

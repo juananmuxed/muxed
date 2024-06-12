@@ -263,7 +263,7 @@ export const useTerminal = () => {
       }
       let [folderName] = commandOptions.value;
       if (firstParam === '..' || firstParam === '/') {
-        if (!actualFolder.value?.parent) {
+        if (actualFolder.value?.parent === undefined) {
           createErrorLine(
             'You have no permission to this folder',
           );

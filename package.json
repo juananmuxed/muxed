@@ -10,7 +10,7 @@
     "test:unit": "vitest --environment jsdom",
     "coverage": "vitest run --coverage",
     "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "type-check": "vue-tsc --noEmit --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "patch": "npm version patch -m \"🩹 Patch upgrade to version %s\" & git push --tags",
     "minor": "npm version minor -m \"💊 Minor upgrade to version %s\" & git push --tags",

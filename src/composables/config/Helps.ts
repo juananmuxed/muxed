@@ -5,7 +5,7 @@ export const Helps = [
     command: '',
     lines: [
       {
-        type: 'prompt', color: '', text: '<br>', path: '',
+        type: 'prompt', text: '<br>', path: '',
       },
     ],
   },
@@ -13,7 +13,7 @@ export const Helps = [
     command: 'clear',
     lines: [
       {
-        type: 'prompt', color: '', text: '<br>', path: '',
+        type: 'prompt', text: '<br>', path: '',
       },
     ],
   },
@@ -21,7 +21,7 @@ export const Helps = [
     command: 'cd',
     lines: [
       {
-        type: 'prompt', color: '', text: '<br>', path: '',
+        type: 'prompt', text: '<br>', path: '',
       },
     ],
   },
@@ -29,7 +29,7 @@ export const Helps = [
     command: 'echo',
     lines: [
       {
-        type: 'prompt', color: '', text: '<br>', path: '',
+        type: 'prompt', text: '<br>', path: '',
       },
     ],
   },

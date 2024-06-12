@@ -261,7 +261,11 @@ export const useTerminal = () => {
       if (firstParam === '.') {
         return;
       }
-      let [folderName] = commandOptions.value;
+
+      const [commandOption] = commandOptions.value;
+      const foldersNames = commandOption.split('/').filter((_command) => _command !== '');
+      let folderName = foldersNames[foldersNames.length - 1];
+
       if (firstParam === '..' || firstParam === '/') {
         if (actualFolder.value?.parent === undefined) {
           createErrorLine(
@@ -272,9 +276,11 @@ export const useTerminal = () => {
         getTempFolderById(actualFolder.value?.parent);
         folderName = tempFolder.value?.name || homeFolder?.name || '';
       }
+
       const folderValid = folders.value.find(
         (folder) => folder.name === folderName.replace(/\/$/, ''),
       );
+
       if (folderValid) {
         setFolder(folderValid);
         setActualPathUrl();

@@ -1,0 +1,5 @@
+{
+    "home": "Hey, I'm <span class='color-highlight'>{nickname}</span>!",
+    "about": "Things about <span class='color-highlight'>me</span>",
+    "terminal": "Bash <span class='color-highlight'>terminal</span>"
+}

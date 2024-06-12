@@ -51,7 +51,7 @@
   div,
   span {
     &.info {
-      color: $text-link !important;
+      color: $bg-info !important;
     }
     &.success {
       color: $bg-success !important;
@@ -61,6 +61,21 @@
     }
     &.error-light {
       color: $bg-error__dark !important;
+    }
+  }
+  button {
+    display: inline-block;
+    border: none;
+    font-size: $font_size_menu;
+    font-family: IBMVBA8, monospace;
+    cursor: pointer;
+    margin: 0.2em;
+    padding: 0.4em 0.6em;
+    color: $background__dark;
+    background-color: $text-link__dark;
+    transition: all .3s ease-out;
+    &:hover {
+      background-color: $text-link-hover__dark;
     }
   }
   input {
@@ -94,7 +109,7 @@
       &.potentials {
         ul {
           li {
-            background-color: $background_gray;
+            background-color: $background_gray__dark;
           }
         }
       }
@@ -103,10 +118,18 @@
       animation: blinkerAnimationLight 1.2s linear infinite;
       -webkit-animation: blinkerAnimationLight 1.2s linear infinite;
     }
+    button {
+      color: $background;
+      background-color: $text-link;
+
+      &:hover {
+        background-color: $text-link-hover;
+      }
+    }
     div,
     span {
       &.info {
-        color: $text-link__dark !important;
+        color: $bg-info__dark !important;
       }
       &.success {
         color: $bg-success__dark !important;

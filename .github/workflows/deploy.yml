@@ -1,9 +1,8 @@
 name: Deploy to web server
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 
 jobs:
   deploy:
@@ -18,9 +17,11 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
-            node -v
-            git pull
-            npm install
+            git checkout main
+            git restore .
+            git pull origin main
+            rm -rf node_modules/
+            npm i
             git restore package-lock.json
             npm run build
             cp example.htaccess dist/.htaccess

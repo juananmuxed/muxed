@@ -1,9 +1,10 @@
-import { describe, it, expect } from "vitest";
-import { mount } from "@vue/test-utils";
-import FooterVue from "../footer/Footer.vue";
+import { describe, it, expect } from 'vitest';
+import { mount } from '@vue/test-utils';
 
-describe("Footer", () => {
-  it("Default", () => {
+import FooterVue from '../footer/Footer.vue';
+
+describe('Footer', () => {
+  it('Default', () => {
     const wrapper = mount(FooterVue);
 
     expect(wrapper.element).toMatchSnapshot();

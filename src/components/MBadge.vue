@@ -1,32 +1,31 @@
 <template>
   <div class="m-badge" :class="[color, rounded ? 'rounded' : '']" :style="{ verticalAlign: align }">
-    <span class="label" v-if="$slots.default || label">
-      <slot v-if="!label"></slot>
+    <span v-if="$slots.default || label" class="label">
+      <slot v-if="!label" />
       <template v-else>{{ label }}</template>
     </span>
   </div>
 </template>
 
-<script setup lang="ts">;
-const props = defineProps({
+<script setup lang="ts">
+defineProps({
   label: {
     type: String,
-    default: null
+    default: null,
   },
   color: {
     type: String,
-    default: 'primary'
+    default: 'primary',
   },
   rounded: {
     type: Boolean,
-    default: false
+    default: false,
   },
   align: {
     type: String,
-    default: ''
-  }
-})
+    default: '',
+  },
+});
 </script>
 
-<style scoped lang="scss" src="@/assets/scss/components/badge.scss">
-</style>
+<style scoped lang="scss" src="@/assets/scss/components/badge.scss" />

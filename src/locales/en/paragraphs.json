@@ -1,0 +1,13 @@
+{
+  "home": [
+    "My real name is <span class='color-highlight'>Juan Antonio Sánchez Melero</span> and I'm a <b>web developer</b>."
+  ],
+  "about": [
+    "I'm <span class='color-highlight'>developer</span> but...",
+    "For years I took the leap from graphic design and audiovisual to web development and system administration.",
+    "I started with the basics of development, <span class='color-highlight'>HTML, CSS and JS</span> and I have been updating with frameworks and new technologies such as <span class='color-highlight'>Vue, Angular, SCSS, SASS or LESS, PHP, Node</span>, etc...",
+    "In addition, during the process I have learned related things such as, system administration, databases, version control, agile methodologies and others. Come on, normal.",
+    "My hobbies are, among others, board games, video games, role-playing and miniatures.",
+    "If you want to see personal projects check one of my favorites:"
+  ]
+}
